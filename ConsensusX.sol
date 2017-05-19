@@ -1,6 +1,9 @@
 pragma solidity^0.4.10;
 
-contract ConsensusX
+ import "Token";
+ import "Owned";
+
+contract ConsensusX is Owned
 {
 	mapping(bytes32 => address) contracts;
 	Token token;
