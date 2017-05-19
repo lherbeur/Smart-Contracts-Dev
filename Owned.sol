@@ -1,26 +1,22 @@
 pragma solidity^0.4.10;
 
-contract Owned{
+contract Owned {
 
-address owner;
+	address owner;
 
     function Owned() {
 
        owner = msg.sender;
     }
 
+	function setOwner(address newOwner) isOwner {
+    	owner = newOwner;
+	}
 
-function setOwner(address newOwner)
-isOwner
-{
-    owner = newOwner;
-}
-
-modifier isOwner()
-{
-    if (msg.sender != owner)
-        throw;
-    _;
-}
+	modifier isOwner() {
+	    if (msg.sender != owner)
+	        throw;
+	    _;
+	}
 
 }
