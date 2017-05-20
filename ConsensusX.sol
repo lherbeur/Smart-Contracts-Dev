@@ -23,6 +23,8 @@ contract ConsensusX is Owned {
 
 	/// @dev
   struct PersonaAttributes {
+  	bytes32 name;
+    bytes32 role;
 	uint reputation;
 	//…
 	//…
