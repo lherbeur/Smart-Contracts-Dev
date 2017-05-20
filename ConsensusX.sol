@@ -1,3 +1,8 @@
+/*
+    Copyright SuperDAO Prep May 2017
+    
+*/
+
 pragma solidity^0.4.10;
 
  import "Token";
@@ -27,10 +32,13 @@ contract ConsensusX is Owned {
 	}
 
 	//check the ‘contracts’ mapping and set val of contractName’s address to 0x0
-	function removeContract(bytes32 contractName) internal {
-		//…
-		contracts [contractName] = 0x0;
-		//…
+	function removeContract(bytes32 contractName) onlyOwner returns (bool result){ //onlyOwner modifier is inherited from the "Owned" contract
+		address cname = contracts[contractName];
+		if (cname == 0x0) return false;
+		contracts[contractName] = 0x0;
+		delete contracts[contractName];    //delete contract name from mapping
+		return true;
+		//event should be triggered to notify success   @mikedobor
 	}
 
 	//checks of calling persona is permitted to invoke fxns
