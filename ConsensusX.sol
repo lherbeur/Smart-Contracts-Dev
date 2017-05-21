@@ -17,6 +17,7 @@ contract ConsensusXX is Owned {
 
     /// @dev Contract names to contract addresses database mapping
     mapping(bytes32 => address) contracts;
+    event DeleteContract(bytes name, bool success);
 
     /// @dev
     struct AuthCaller {
@@ -60,14 +61,12 @@ contract ConsensusXX is Owned {
     * @dev add contract with contactAddress n contractName to the ‘contracts’ mapping. for actions, actionsdb, tokendb…
     * @param contractName Name of contract to be added
     */
-    function removeContract(bytes32 contractName) isOwner returns (bool result){ //onlyOwner modifier is inherited from the "Owned" contract
-        address cname = contracts[contractName];
-        if (cname == 0x0)
+    function removeContract(bytes32 contractName) isOwner returns (bool result){ //isOwner modifier is inherited from the "Owned" contract
+        if (contracts[contractName] == 0x0)
         return false;
-        contracts[contractName] = 0x0;
         delete contracts[contractName];    //delete contract name from mapping
         return true;
-        //event should be triggered to notify success   @mikedobor
+        DeleteContract(contractName, result);
     }
 
 
