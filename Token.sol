@@ -34,16 +34,39 @@ contract Token is Owned, ERC20  {
     function checkTokenBalance() {      //Function to check balance of token in address
     } */
 
+
+    ///@dev calls internal function "doTransfer" after checks
+    ///@param _to address where token will be sent
+    ///@value value of tokens
     function transfer(address _to, uint256 _value) returns (bool success) {
-
+    	//.......checks
+    	//.....and other lines of code
+    	doTransfer(address _from, address _to, uint _amount);
     }
-    
+
+    ///@dev calls internal function "doTransfer" after checks
+    ///@param _from address where token will be sent from
+    ///@param _to address where token will be sent to
+    ///@value value of tokens
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+    	//.......checks
+    	//.....and other lines of code
+    	doTransfer(address _from, address _to, uint _amount);
+    }
+
+    ///@dev adds address and the maximum amount of tokens they can spend on behalf of owner
+    ///@param _spender address of contract 
+    ///@param _value maximum value of tokens 
+    function approve(address _spender, uint256 _value) returns (bool success){
 
     }
 
-    function approve(address _spender, uint256 _value) returns (bool success){
-    	
+    ///@dev internal function where the token transfer logic resides, as well
+    /// as various checks before transfer is done for security purposes.
+    ///@param _from address of sender
+    ///@param _from address of receiver
+    function doTransfer(address _from, address _to, uint _amount) internal returns (bool) {
+
     }
     
 }
