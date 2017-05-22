@@ -1,4 +1,4 @@
-pragma solidity^0.4.10;
+pragma solidity ^0.4.10;
 
 import "Owned.sol";
 import "/library/token/ERC20.sol";
@@ -10,6 +10,7 @@ contract Token is Owned, ERC20  {
 	uint public decimals;			//number of decimals of the smallest unit
 	string public symbol;			//token symbol
 	string public version;			//version value according to an arbitrary scheme
+	uint256 public totalSupply;
 
 	///@notice mapping to track amount of tokens each address holds
 	mapping (address => uint256) public balanceOf;
@@ -24,15 +25,26 @@ contract Token is Owned, ERC20  {
 		//...
     }
     
-    function transferToAddress() { //Function to transfer token to address
+    /* function transferToAddress() { //Function to transfer token to address
     }
     
     function transferToContract() {     //Function to transfer token to contract
     }
     
     function checkTokenBalance() {      //Function to check balance of token in address
+    } */
+
+    function transfer(address _to, uint256 _value) returns (bool success) {
+
     }
     
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+
+    }
+
+    function approve(address _spender, uint256 _value) returns (bool success){
+    	
+    }
     
 }
 
