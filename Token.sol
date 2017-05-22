@@ -11,10 +11,23 @@ contract Token  {
 	    uint amountOfTokens;
 	    
 	}
-
+    
+    event Transfer(address indexed _from, address indexed _to, uint256 _value) //Transfer event
+    
     function Token() {
 		//...
     }
+    
+    function transferToAddress() { //Function to transfer token to address
+    }
+    
+    function transferToContract() {     //Function to transfer token to contract
+    }
+    
+    function checkTokenBalance() {      //Function to check balance of token in address
+    }
+    
+    
 }
 
 
