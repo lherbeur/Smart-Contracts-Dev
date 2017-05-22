@@ -6,14 +6,10 @@ import "/library/token/ERC20.sol";
 contract Token is Owned, ERC20  {
 	//conforming to the ERC20 /223 standard
 
-  	mapping(address => TokenAttributes) tokens;
-
-	struct TokenAttributes {
-	    address tokenOwner;
-	    uint tokenValue;
-	    uint amountOfTokens;
-	    
-	}
+  	string public name; 			//token name
+	uint public decimals;			//number of decimaals of the smallest unit
+	string public symbol;			//token symbol
+	string public version;			//version value according to an arbitrary scheme
     
     event Transfer(address indexed _from, address indexed _to, uint256 _value) //Transfer event
     
