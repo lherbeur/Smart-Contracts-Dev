@@ -1,6 +1,9 @@
 pragma solidity^0.4.10;
 
-contract Token  {
+import "Owned.sol";
+import "/library/token/ERC20.sol";
+
+contract Token is Owned, ERC20  {
 	//conforming to the ERC20 /223 standard
 
   	mapping(address => TokenAttributes) tokens;
