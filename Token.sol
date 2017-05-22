@@ -7,7 +7,7 @@ contract Token is Owned, ERC20  {
 	//conforming to the ERC20 /223 standard
 
   	string public name; 			//token name
-	uint public decimals;			//number of decimals of the smallest unit
+	uint8 public decimals;			//number of decimals of the smallest unit
 	string public symbol;			//token symbol
 	string public version;			//version value according to an arbitrary scheme
 	uint256 public totalSupply;
@@ -21,7 +21,13 @@ contract Token is Owned, ERC20  {
     event Transfer(address indexed _from, address indexed _to, uint256 _value); //Transfer event
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
     
-    function Token() {
+    function Token(
+    	string tokenName,
+    	uint8 decimalUnits,
+    	string tokenSymbol,
+    	string tokenVersion,
+    	uint256 initialSupply
+    	) {
 		//...
     }
     
