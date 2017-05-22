@@ -7,11 +7,18 @@ contract Token is Owned, ERC20  {
 	//conforming to the ERC20 /223 standard
 
   	string public name; 			//token name
-	uint public decimals;			//number of decimaals of the smallest unit
+	uint public decimals;			//number of decimals of the smallest unit
 	string public symbol;			//token symbol
 	string public version;			//version value according to an arbitrary scheme
+
+	///@notice mapping to track amount of tokens each address holds
+	mapping (address => uint256) public balanceOf;
+
+	///@notice mapping to track maximum amount of tokens each address can spend on behalf of owner
+	mapping (address => uint256) public allowance; 
     
-    event Transfer(address indexed _from, address indexed _to, uint256 _value) //Transfer event
+    event Transfer(address indexed _from, address indexed _to, uint256 _value); //Transfer event
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
     
     function Token() {
 		//...
