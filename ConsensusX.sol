@@ -100,4 +100,10 @@ contract ConsensusX is Owned {
 
         return false;
     }
+    
+    /// @dev fallback function
+    function() 
+    {
+    }
+
 }
