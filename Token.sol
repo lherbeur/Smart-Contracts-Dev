@@ -47,7 +47,7 @@ contract Token is Owned, ERC20  {
     function transfer(address _to, uint256 _value) returns (bool success) {
     	//.......checks
     	//.....and other lines of code
-    	doTransfer(address _from, address _to, uint _amount);
+    	doTransfer(_from, _to,  _amount);
     }
 
     ///@dev calls internal function "doTransfer" after checks
@@ -57,7 +57,7 @@ contract Token is Owned, ERC20  {
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
     	//.......checks
     	//.....and other lines of code
-    	doTransfer(address _from, address _to, uint _amount);
+    	doTransfer(_from, _to, _amount);
     }
 
     ///@dev adds address and the maximum amount of tokens they can spend on behalf of owner
