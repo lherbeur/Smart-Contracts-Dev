@@ -120,8 +120,4 @@ contract ConsensusX is Owned {
         throw;
     }
     
-    /// @dev  make low level function calls
-    function callContract("contractSig", "argument") {
-    }
-
 }
