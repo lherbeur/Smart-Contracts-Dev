@@ -1,7 +1,7 @@
-pragma solidity ^0.4.10;
+pragma solidity ^0.4.11;
 
-import "Owned.sol";
-import "/library/token/ERC20.sol";
+import "./Owned.sol";
+import "./library/token/ERC20.sol";
 
 contract Token is Owned, ERC20  {
 	//conforming to the ERC20 /223 standard
@@ -16,11 +16,11 @@ contract Token is Owned, ERC20  {
 	mapping (address => uint256) public balanceOf;
 
 	///@notice mapping to track maximum amount of tokens each address can spend on behalf of owner
-	mapping (address => uint256) public allowance; 
-    
+	mapping (address => uint256) public allowance;
+
     event Transfer(address indexed _from, address indexed _to, uint256 _value); //Transfer event
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
-    
+
     function Token(
     	string tokenName,
     	uint8 decimalUnits,
@@ -30,13 +30,13 @@ contract Token is Owned, ERC20  {
     	) {
 		//...
     }
-    
+
     /* function transferToAddress() { //Function to transfer token to address
     }
-    
+
     function transferToContract() {     //Function to transfer token to contract
     }
-    
+
     function checkTokenBalance() {      //Function to check balance of token in address
     } */
 
@@ -61,8 +61,8 @@ contract Token is Owned, ERC20  {
     }
 
     ///@dev adds address and the maximum amount of tokens they can spend on behalf of owner
-    ///@param _spender address of contract 
-    ///@param _value maximum value of tokens 
+    ///@param _spender address of contract
+    ///@param _value maximum value of tokens
     function approve(address _spender, uint256 _value) returns (bool success){
 
     }
@@ -74,9 +74,5 @@ contract Token is Owned, ERC20  {
     function doTransfer(address _from, address _to, uint _amount) internal returns (bool) {
 
     }
-    
+
 }
-
-
-
-

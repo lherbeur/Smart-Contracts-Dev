@@ -1,4 +1,4 @@
-pragma solidity^0.4.10;
+pragma solidity ^0.4.11;
 
 contract Owned {
 
@@ -14,8 +14,7 @@ contract Owned {
 	}
 
 	modifier isOwner() {
-	    if (msg.sender != owner)
-	        throw;
+	    require(msg.sender != owner);
 	    _;
 	}
 

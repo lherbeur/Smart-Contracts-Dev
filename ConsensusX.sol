@@ -2,10 +2,10 @@
 Copyright SuperDAO Prep May 2017
 */
 
-pragma solidity^0.4.10;
+pragma solidity ^0.4.11;
 
- import "Token";
- import "Owned";
+ import "./Token.sol";
+ import "./Owned.sol";
 
 
 
@@ -23,8 +23,8 @@ contract ConsensusX is Owned {
 
     mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
     mapping(address => AuthCaller[]) permittedPersonasPerDb; // List of Permitted personas
-    event EventAddedContract(bytes, bool);
-    event DeleteContract(bytes name, bool success);
+    event EventAddedContract(bytes32, bool);
+    event DeleteContract(bytes32 name, bool success);
 
     struct AuthCaller {
         /*bytes32 name;
@@ -35,16 +35,29 @@ contract ConsensusX is Owned {
         //…
     }
 
+    AuthCaller[] authCallers;
+
     /// @dev checks if calling contract is authorized to perform action
     modifier isPermittedPersona (uint reputation) {
         /*require(permittedPersonas[msg.sender].reputation > reputation); //or some agreed upon value*/
         _;
     }
 
+    function getContracts(bytes32 contractName) constant returns (address){
+        return contracts[contractName];
+    }
 
     function ConsensusX(address tokenAddress) {
         token = Token(tokenAddress);
     }
+
+    /**
+    * @dev make low level function calls
+    * @param contractSig - function signature
+    * @param argument - function argument
+    */
+	function callContract(bytes32 contractSig, bytes32 argument) returns (bool){
+	}
 
 
     /** @notice Add `_contractName` with address: `_contractAddress` to the contracts database.
@@ -57,8 +70,8 @@ contract ConsensusX is Owned {
         if (contracts[_contractName] != 0x0)
             return false;
         contracts[_contractName] = _contractAddress;
-        return true;
         EventAddedContract(_contractName, true);
+        return true;
     }
 
 
@@ -70,8 +83,8 @@ contract ConsensusX is Owned {
         if (contracts[contractName] == 0x0)
         return false;
         delete contracts[contractName];    //delete contract name from mapping
-        return true;
         DeleteContract(contractName, result);
+        return true;
     }
 
 
@@ -89,7 +102,7 @@ contract ConsensusX is Owned {
 
     /// @dev Check the existence of an authorized caller address
     function canCallConsX(address _personaDbAddress, address _callerAddress) private returns(bool) {
-        AuthCaller[] authCallers = permittedPersonasPerDb[_personaDbAddress];
+        authCallers = permittedPersonasPerDb[_personaDbAddress];
 
         // check for existence of authorized caller address
         for (uint i = 0; i < authCallers.length; i++) {
@@ -100,9 +113,9 @@ contract ConsensusX is Owned {
 
         return false;
     }
-    
+
     /// @dev fallback function
-    function() 
+    function()
     {
     }
 
