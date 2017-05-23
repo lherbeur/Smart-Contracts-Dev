@@ -117,6 +117,11 @@ contract ConsensusX is Owned {
     /// @dev fallback function
     function()
     {
+        throw;
+    }
+    
+    /// @dev  make low level function calls
+    function callContract("contractSig", "argument") {
     }
 
 }
