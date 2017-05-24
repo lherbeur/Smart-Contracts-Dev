@@ -12,16 +12,16 @@ contract ERC23 {
 	*/
 	event Transfer(address indexed _from, address indexed _to, uint256 _value, bytes _data);
 
-	//@dev - gets tonen's total supply
-	function totalSupply() constant returns (uint256 totalSupply);
-	//dev - gets name of token
-	function name() constant returns (string _name);
-	//dev - gets symbol of token
-	function symbol() constant returns (string _symbol);
-	//@dev - gets token's decimals
-	function decimals() constant returns (uint8 _decimals);
-	///@dev - gets the account balance of another account with address _owner
-	function balanceOf(address _owner) constant returns (uint256 balance);
+	/// @dev - gets tonen's total supply
+	function totalSupply() constant returns (uint256 totalSupply){}
+	/// dev - gets name of token
+	function name() constant returns (string _name){}
+	/// dev - gets symbol of token
+	function symbol() constant returns (string _symbol){}
+	/// @dev - gets token's decimals
+	function decimals() constant returns (uint8 _decimals){}
+	/// @dev - gets the account balance of another account with address _owner
+	function balanceOf(address _owner) constant returns (uint256 balance){}
 
 	/**
 	* @dev - funcion called when token is to be transferred. 
@@ -31,7 +31,7 @@ contract ERC23 {
 	* @param _value - amount of tokens
 	* @param _data - code associated with token transaction
 	*/
-	function transfer(address _to, uint _value, bytes _data) returns (bool success);
+	function transfer(address _to, uint _value, bytes _data) returns (bool success){}
 
 	/**
 	* @dev Needed for backwards compatibility with ERC20 Standard where the transfer function 
@@ -40,7 +40,7 @@ contract ERC23 {
 	* @param _to - reciever address
 	* @param _value - token value
 	*/
-	function transfer(address _to, uint _value) returns (bool success);
+	function transfer(address _to, uint _value) returns (bool success){}
 
 	/**
 	* @dev - function to handle token transfers. This function is called form the 
@@ -50,5 +50,5 @@ contract ERC23 {
 	* @param _value - amount of incoming tokens
 	* @param _data - code associated with transaction
 	*/
-	function tokenFallback(address _from, uint _value, bytes _data);
+	function tokenFallback(address _from, uint _value, bytes _data){}
 }
