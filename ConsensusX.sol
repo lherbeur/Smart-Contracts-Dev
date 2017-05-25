@@ -56,7 +56,14 @@ contract ConsensusX is Owned {
     * @param contractSig - function signature
     * @param argument - function argument
     */
-	function callContract(bytes32 contractSig, bytes32 argument) returns (bool){
+	function callContractFunction(
+        address _personaDbAddress,
+        bytes32 contractName,
+        bytes32 contractSig,
+        bytes32 argument)
+        returns (bool) {
+        require(canCallConsX(_personaDbAddress, msg.sender) == true);
+        return contracts[contractName].call(bytes4(sha3(contractSig)), argument);
 	}
 
 
@@ -119,5 +126,5 @@ contract ConsensusX is Owned {
     {
         throw;
     }
-    
+
 }
