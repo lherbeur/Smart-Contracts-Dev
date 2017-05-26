@@ -8,9 +8,10 @@ contract Vesting {
         uint64 cliffBegin;
         uint64 cliffEnd;
         uint256 tokenStake;
+        uint256 loggedBy;
     }
     mapping (address => Schedule[]) public masterSchedule;
-    event Scheduled(address addr, uint64 cliffBegin, uint64 cliffEnd, uint256 tokenStake);
+    event Scheduled(address addr, uint64 cliffBegin, uint64 cliffEnd, uint256 tokenStake, uint256 loggedBy);
 
     function Vesting() {
 
@@ -23,7 +24,7 @@ contract Vesting {
         schedules.push(Schedule(_cliffBegin, _cliffEnd, _tokenStake));// push new schedule into schedules
         masterSchedule[_addr] = schedules;// save updated schedules
 
-        Scheduled(_addr, _cliffBegin, _cliffEnd, _tokenStake);
+        Scheduled(_addr, _cliffBegin, _cliffEnd, _tokenStake, now);
 
         return (masterSchedule[_addr] == 0);
     }
