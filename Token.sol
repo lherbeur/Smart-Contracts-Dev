@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 
 import "./Owned.sol";
-import "./ERC23.sol";
+import "./library/token/ERC20.sol";
 
 contract Token is Owned, ERC23  {
 	//conforming to the ERC20 /223 standard
