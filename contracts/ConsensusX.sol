@@ -73,7 +73,7 @@ contract ConsensusX is Owned {
     * @param _contractName Name of contract to be added
     * @param _contractAddress address of contract to be added
     */
-    function addContract(bytes32 _contractName, address _contractAddress) isOwner returns (bool) {
+    function addContract(bytes32 _contractName, address _contractAddress) /* isOwner */ returns (bool) {
         if (contracts[_contractName] != 0x0)
             return false;
         contracts[_contractName] = _contractAddress;
