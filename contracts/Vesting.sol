@@ -1,9 +1,9 @@
 pragma solidity ^0.4.11;
 
-import "ConsensusX.sol";
+import "./ConsensusX.sol";
 
 contract Vesting {
-    address consX;
+    /* address consX;
     struct Schedule {
         uint64 cliffBegin;
         uint64 cliffEnd;
@@ -17,11 +17,11 @@ contract Vesting {
     }
 
 
-    /// @dev
-    function assignSchedule(address _addr, uint64 _cliffBegin, uint64 _cliffEnd, uint256 _tokenStake) onlyConsensusX returns (bool) {
+    // @dev
+    function assignSchedule(address _addr, uint64 _cliffBegin, uint64 _cliffEnd, uint256 _tokenStake) OnlyConsensusX returns (bool) {
         Schedule[] schedules = masterSchedule[_addr];// extract previous persona schedule(s)
         schedules.push(Schedule(_cliffBegin, _cliffEnd, _tokenStake));// push new schedule into schedules
-        masterSchedule[_addr] = schedule;// save updated schedules
+        masterSchedule[_addr] = schedules;// save updated schedules
 
         Scheduled(_addr, _cliffBegin, _cliffEnd, _tokenStake);
 
@@ -29,7 +29,7 @@ contract Vesting {
     }
 
 
-    /// @dev
+    // @dev
     function setConsXAddress(address _consXAddr) returns (bool){
         if(consX != 0x0 && _consXAddr != consX){
             return false;
@@ -39,7 +39,7 @@ contract Vesting {
     }
 
 
-    /// @dev
+    // @dev
     function isConsXEnabled() internal constant returns (bool) {
         if(consX != 0x0){
             address ca = new ConsensusX(consX);
@@ -51,7 +51,7 @@ contract Vesting {
     }
 
 
-    /// @dev
+    // @dev
     modifier OnlyConsensusX() {
         require(isConsXEnabled());
         _;
@@ -61,5 +61,5 @@ contract Vesting {
     // Fallback
     function () {
         throw;
-    }
+    } */
 }
