@@ -1,7 +1,20 @@
+/*
+Copyright SuperDAO Prep May 2017
+*/
+
 pragma solidity ^0.4.11;
 
 import "./ConsensusX.sol";
 
+
+/** @title Vesting
+* @author Charles
+* @author Wunmi
+* @author Tosin
+* @author Michael
+* @author Emmanuel
+* @author Promise
+*/
 contract Vesting {
     /* address consX;
     struct Schedule {
@@ -18,7 +31,13 @@ contract Vesting {
     }
 
 
-    // @dev
+    /**
+    * @dev assigns a vesting schedule to a persona address
+    * @param _addr - persona address 
+    * @param _cliffBegin - cliff start date
+    * @param _cliffEnd - cliff end date 
+    * @param _tokenStake - amount of tokens 
+    */
     function assignSchedule(address _addr, uint64 _cliffBegin, uint64 _cliffEnd, uint256 _tokenStake) OnlyConsensusX returns (bool) {
         Schedule[] schedules = masterSchedule[_addr];// extract previous persona schedule(s)
         schedules.push(Schedule(_cliffBegin, _cliffEnd, _tokenStake));// push new schedule into schedules
@@ -30,7 +49,10 @@ contract Vesting {
     }
 
 
-    // @dev
+    /**
+    * @dev sets address of ConsensusX 
+    * @param _consXAddr - address of ConsensusX
+    */
     function setConsXAddress(address _consXAddr) returns (bool){
         if(consX != 0x0 && _consXAddr != consX){
             return false;
@@ -39,8 +61,10 @@ contract Vesting {
         return true;
     }
 
-
-    // @dev
+    /**
+    * @dev checks if caller is ConsensusX
+    * @return true if the caller is ConsensusX 
+    */
     function isConsXEnabled() internal constant returns (bool) {
         if(consX != 0x0){
             address ca = new ConsensusX(consX);
@@ -51,8 +75,6 @@ contract Vesting {
         return false;
     }
 
-
-    // @dev
     modifier OnlyConsensusX() {
         require(isConsXEnabled());
         _;
