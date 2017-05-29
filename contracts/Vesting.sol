@@ -79,6 +79,7 @@ contract Vesting is Owned {
     */
     function getVestingSchedulePerIndex (address _personaAddr, uint index)
     onlyConsensusX
+    isValidIndex(index)
     constant
     returns (bytes32, uint64, uint64, uint64, uint256, uint256)
     {
@@ -119,6 +120,11 @@ contract Vesting is Owned {
 
     modifier onlyConsensusX () {
         require(msg.sender == consensusXAddr);
+        _;
+    }
+
+    modifier isValidIndex (uint index) {
+        require(index >= 0);
         _;
     }
 
