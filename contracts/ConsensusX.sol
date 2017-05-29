@@ -60,10 +60,10 @@ contract ConsensusX is Owned {
         address _personaDbAddress,
         bytes32 contractName,
         bytes32 contractSig,
-        bytes32 argument)
+        bytes32 [] arguments)
         returns (bool) {
         require(canCallConsX(_personaDbAddress, msg.sender) == true);
-        return contracts[contractName].call(bytes4(sha3(contractSig)), argument);
+        return contracts[contractName].call(bytes4(sha3(contractSig)), arguments);
 	}
 
 
