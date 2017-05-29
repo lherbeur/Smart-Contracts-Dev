@@ -45,6 +45,7 @@ contract Vesting is Owned {
     * @param _end - end date
     * @param _cliff - cliff
     * @param _value - amount of tokens
+    * @return the length of schedules for persona
     */
     function assignSchedule (
         address _to,
