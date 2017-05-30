@@ -4,32 +4,32 @@ import "./Owned.sol";
 import "./library/token/ERC23.sol";
 
 contract Token is Owned, ERC23  {
-	//conforming to the ERC20 /223 standard
+    //conforming to the ERC20 /223 standard
 
-  	string public name; 			//token name
-	uint8 public decimals;			//number of decimals of the smallest unit
-	string public symbol;			//token symbol
-	string public version;			//version value according to an arbitrary scheme
-	uint256 public totalSupply;
+    string public name;             //token name
+    uint8 public decimals;          //number of decimals of the smallest unit
+    string public symbol;           //token symbol
+    string public version;          //version value according to an arbitrary scheme
+    uint256 public totalSupply;
 
-	/// @notice mapping to track amount of tokens each address holds
-	mapping (address => uint256) public balances;
+    /// @notice mapping to track amount of tokens each address holds
+    mapping (address => uint256) public balances;
 
     /// @notice event triggered when tokens are transferred
     event Transfer(address indexed _from, address indexed _to, uint256 _value); //Transfer event
 
     function Token(
-    	string tokenName,
-    	uint8 decimalUnits,
-    	string tokenSymbol,
-    	string tokenVersion,
-    	uint256 initialSupply
-    	) {
-		name = tokenName;
-		decimals = decimalUnits;
-		symbol = tokenSymbol;
-		version = tokenVersion;
-		totalSupply = initialSupply;
+        string tokenName,
+        uint8 decimalUnits,
+        string tokenSymbol,
+        string tokenVersion,
+        uint256 initialSupply
+        ) {
+        name = tokenName;
+        decimals = decimalUnits;
+        symbol = tokenSymbol;
+        version = tokenVersion;
+        totalSupply = initialSupply;
     }
 
     /// @notice function to access name of token .
@@ -55,21 +55,6 @@ contract Token is Owned, ERC23  {
     function balanceOf(address _owner) constant returns (uint balance) {
         return balances[_owner];
     }
-    
-    //assemble the given address bytecode. If bytecode exists then the _addr is a contract.
-    function isContract(address _addr) private returns (bool is_contract) {
-        uint length;
-        assembly {
-            //retrieve the size of the code on target address, this needs assembly
-            length := extcodesize(_addr)
-        }
-        if(length>0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 
 
     /**
@@ -81,7 +66,7 @@ contract Token is Owned, ERC23  {
     */
     function transfer(address _to, uint _value, bytes _data) returns (bool success) {
         //.......checks
-    	//.....and other lines of code
+        //.....and other lines of code
     }
 
 
@@ -94,10 +79,11 @@ contract Token is Owned, ERC23  {
     * @param _value of tokens
     */
     function transfer(address _to, uint256 _value) returns (bool success) {
+        bytes memory empty;
         if (balanceOf(msg.sender) < _value) throw;
         balances[msg.sender] -= _value;
         balances[_to] += _value;
-        Transfer(msg.sender, _to, _value, _data);
+        Transfer(msg.sender, _to, _value, empty);
         return true;
 
     }
@@ -123,11 +109,23 @@ contract Token is Owned, ERC23  {
 
 
     /**
-    * @dev this function assembles the given address bytecode, if the
+    * @dev function that determines if given address belongs to a contract or 
+    * external address - this function assembles the given address bytecode, if the
     *  bytecode exists, then _addr is a contract.
     * @param _addr address of either a conract or external account
     */
     function isContract(address _addr) private returns (bool is_contract) {
+        uint length;
+        assembly {
+            //retrieve the size of the code on target address, this needs assembly
+            length := extcodesize(_addr)
+        }
+        if(length>0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

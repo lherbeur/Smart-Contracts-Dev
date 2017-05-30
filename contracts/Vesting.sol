@@ -4,7 +4,7 @@ Copyright SuperDAO Prep May 2017
 
 pragma solidity ^0.4.11;
 
-import "Owned.sol";
+import "./Owned.sol";
 
 /** @title Vesting
 * @author Charles
