@@ -37,16 +37,6 @@ contract ConsensusX is Owned {
 
     AuthCaller[] authCallers;
 
-    /// @dev checks if calling contract is authorized to perform action
-    modifier isPermittedPersona (uint reputation) {
-        /*require(permittedPersonas[msg.sender].reputation > reputation); //or some agreed upon value*/
-        _;
-    }
-
-    function getContracts(bytes32 contractName) constant returns (address){
-        return contracts[contractName];
-    }
-
     function ConsensusX(address tokenAddress) {
         token = Token(tokenAddress);
     }
@@ -54,7 +44,7 @@ contract ConsensusX is Owned {
     /**
     * @dev make low level function calls
     * @param contractSig - function signature
-    * @param argument - function argument
+    * @param arguments - function arguments in bytes
     */
 	function callContractFunction(
         address _personaDbAddress,
@@ -80,7 +70,13 @@ contract ConsensusX is Owned {
         EventAddedContract(_contractName, true);
         return true;
     }
-
+    
+     /** @dev Get contract address corresponding to name 
+    * @param contractName - Name of contract to be added
+    */
+    function getContracts(bytes32 contractName) constant returns (address){
+        return contracts[contractName];
+    }
 
     /** @notice Remove `contractName` with address: `contracts[contractName]` from the contracts database.
     * @dev add contract with contactAddress n contractName to the ‘contracts’ mapping. for actions, actionsdb, tokendb…
@@ -119,6 +115,12 @@ contract ConsensusX is Owned {
         }
 
         return false;
+    }
+
+    /// @dev checks if calling contract is authorized to perform action
+    modifier isPermittedPersona (uint reputation) {
+        /*require(permittedPersonas[msg.sender].reputation > reputation); //or some agreed upon value*/
+        _;
     }
 
     /// @dev fallback function
