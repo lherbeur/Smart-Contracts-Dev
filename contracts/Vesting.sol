@@ -141,5 +141,11 @@ contract Vesting is Owned {
              && _value > 0);
          _;
     }
+    
+    /// @dev fallback function
+    function()
+    {
+        throw;
+    }
 
 }
