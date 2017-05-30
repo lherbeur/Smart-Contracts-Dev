@@ -95,8 +95,8 @@ contract Token is Owned, ERC23  {
     */
     function transfer(address _to, uint256 _value) returns (bool success) {
         if (balanceOf(msg.sender) < _value) throw;
-        balances[msg.sender] -= _value);
-        balances[_to] += _value);
+        balances[msg.sender] -= _value;
+        balances[_to] += _value;
         Transfer(msg.sender, _to, _value, _data);
         return true;
 
