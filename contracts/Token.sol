@@ -101,6 +101,13 @@ contract Token is Owned, ERC23  {
     * @param _data code associated with transaction
     */
     function transferToContract(address _to, uint _value, bytes _data) private returns (bool success) {
+        if (balanceOf(msg.sender) < _value) throw;
+        balances[msg.sender] -= _value;
+        balances[_to] += _value;
+        ReceiveTokens receiver = ReceiveTokens();
+        receiver.tokenFallback(msg.sender, _value, _data);
+        Transfer(msg.sender, _to, _value, _data);
+        return true;
     }
 
 
@@ -111,6 +118,11 @@ contract Token is Owned, ERC23  {
     * @param _data - information that accompanies transaction
     */
     function transferToAddress(address _to, uint _value, bytes _data) private returns (bool success) {
+        if (balanceOf(msg.sender) < _value) throw;
+        balances[msg.sender] -= _value;
+        balances[_to] += _value;
+        Transfer(msg.sender, _to, _value, _data);
+        return true;
     }
 
 
