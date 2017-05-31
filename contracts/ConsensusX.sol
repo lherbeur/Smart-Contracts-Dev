@@ -35,7 +35,6 @@ contract ConsensusX is Owned {
         //…
     }
 
-    AuthCaller[] authCallers;
 
     function ConsensusX(address tokenAddress) {
         token = Token(tokenAddress);
@@ -82,11 +81,10 @@ contract ConsensusX is Owned {
     * @dev add contract with contactAddress n contractName to the ‘contracts’ mapping. for actions, actionsdb, tokendb…
     * @param contractName Name of contract to be added
     */
-    function removeContract(bytes32 contractName) isOwner returns (bool result){ //isOwner modifier is inherited from the "Owned" contract
-        if (contracts[contractName] == 0x0)
-        return false;
+    function removeContract(bytes32 contractName) isOwner returns (bool){ //isOwner modifier is inherited from the "Owned" contract
+        if (contracts[contractName] == 0x0) return false;
         delete contracts[contractName];    //delete contract name from mapping
-        DeleteContract(contractName, result);
+        DeleteContract(contractName, true);
         return true;
     }
 
@@ -94,8 +92,8 @@ contract ConsensusX is Owned {
     /// @dev checks if calling persona is permitted to invoke fxns
     function permitPersona(address _personaDbAddress, address _authCallerAddress) public returns(bool){
         if (!canCallConsX(_personaDbAddress, _authCallerAddress)) {
-            authCallers.push(AuthCaller(_authCallerAddress, 1));
-            permittedPersonasPerDb[_personaDbAddress] = authCallers;
+            AuthCaller memory authCaller = AuthCaller(_authCallerAddress, 1);
+            permittedPersonasPerDb[_personaDbAddress].push(authCaller);
             return true;
         }
 
@@ -105,7 +103,7 @@ contract ConsensusX is Owned {
 
     /// @dev Check the existence of an authorized caller address
     function canCallConsX(address _personaDbAddress, address _callerAddress) private returns(bool) {
-        authCallers = permittedPersonasPerDb[_personaDbAddress];
+        AuthCaller[] authCallers = permittedPersonasPerDb[_personaDbAddress];
 
         // check for existence of authorized caller address
         for (uint i = 0; i < authCallers.length; i++) {
