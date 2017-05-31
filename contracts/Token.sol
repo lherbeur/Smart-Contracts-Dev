@@ -65,8 +65,13 @@ contract Token is Owned, ERC23  {
     * @param _data - information that accompanies transactions
     */
     function transfer(address _to, uint _value, bytes _data) returns (bool success) {
-        //.......checks
-        //.....and other lines of code
+        if(isContract(_to)) {
+            transferToContract(_to, _value, _data);
+        }
+        else {
+            transferToAddress(_to, _value, _data);
+        }
+        return true;
     }
 
 
