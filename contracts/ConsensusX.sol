@@ -17,9 +17,9 @@ pragma solidity ^0.4.11;
 * @author Emmanuel
 * @author Promise
 */
-contract ConsensusX is Owned {
+contract ConsensusX is Owned, Token {
 
-    Token token;
+    //Token token;
 
     mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
     mapping(address => AuthCaller[]) permittedPersonasPerDb; // List of Permitted personas
@@ -36,8 +36,34 @@ contract ConsensusX is Owned {
     }
 
 
-    function ConsensusX(address tokenAddress) {
-        token = Token(tokenAddress);
+    function ConsensusX(
+        string tokenName,
+        uint8 decimalUnits,
+        string tokenSymbol,
+        string tokenVersion,
+        uint256 initialSupply
+    ) Token(tokenName, decimalUnits, tokenSymbol, tokenVersion, initialSupply) {
+        //token = Token(tokenAddress);
+    }
+    
+    /**
+    * @dev This function serves as an access for other contracts to call
+    *    the Tokens's transfer function for contracts following ERC20 spec
+    * @param _to - address
+    * @param _value - amount of tokens
+    */
+    function callTransfer(address _to, uint _value) returns (bool){
+        if(transfer(_to, _value)) return true;
+        return false;
+    }
+    
+    /**
+    * @dev function to allocate all initial tokens to an address
+    * @param _allocator - contract address
+    */
+    function allocateTokens(address _allocator) returns (bool){
+        balances[_allocator] = totalSupply;
+        return true;
     }
 
     /**
@@ -45,7 +71,7 @@ contract ConsensusX is Owned {
     * @param contractSig - function signature
     * @param arguments - function arguments in bytes
     */
-	function callContractFunction(
+    function callContractFunction(
         address _personaDbAddress,
         bytes32 contractName,
         bytes32 contractSig,
@@ -53,7 +79,7 @@ contract ConsensusX is Owned {
         returns (bool) {
         require(canCallConsX(_personaDbAddress, msg.sender) == true);
         return contracts[contractName].call(bytes4(sha3(contractSig)), arguments);
-	}
+    }
 
 
     /** @notice Add `_contractName` with address: `_contractAddress` to the contracts database.
