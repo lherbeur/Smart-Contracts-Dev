@@ -2,6 +2,7 @@ pragma solidity ^0.4.11;
 
 import "./Owned.sol";
 import "./library/token/ERC23.sol";
+import "./library/TokenWallet.sol";
 
 contract Token is Owned, ERC23  {
     //conforming to the ERC20 /223 standard
@@ -11,6 +12,7 @@ contract Token is Owned, ERC23  {
     string public symbol;           //token symbol
     string public version;          //version value according to an arbitrary scheme
     uint256 public totalSupply;
+    address public tokenAddr;
 
     /// @notice mapping to track amount of tokens each address holds
     mapping (address => uint256) public balances;
@@ -30,6 +32,7 @@ contract Token is Owned, ERC23  {
         symbol = tokenSymbol;
         version = tokenVersion;
         totalSupply = initialSupply;
+        tokenAddr = this;
     }
 
     /// @notice function to access name of token .
@@ -104,7 +107,7 @@ contract Token is Owned, ERC23  {
         if (balanceOf(msg.sender) < _value) throw;
         balances[msg.sender] -= _value;
         balances[_to] += _value;
-        ReceiveTokens receiver = ReceiveTokens();
+        TokenWallet receiver = TokenWallet(_to);
         receiver.tokenFallback(msg.sender, _value, _data);
         Transfer(msg.sender, _to, _value, _data);
         return true;
