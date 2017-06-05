@@ -20,6 +20,7 @@ pragma solidity ^0.4.11;
 contract ConsensusX is Owned, Token {
 
     //Token token;
+    address public consensusXAddr;
 
     mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
     mapping(address => AuthCaller[]) permittedPersonasPerDb; // List of Permitted personas
@@ -44,6 +45,7 @@ contract ConsensusX is Owned, Token {
         uint256 initialSupply
     ) Token(tokenName, decimalUnits, tokenSymbol, tokenVersion, initialSupply) {
         //token = Token(tokenAddress);
+        owner = this; //setting ConsensusX address as owner of Owned
     }
     
     /**
