@@ -63,8 +63,10 @@ contract ConsensusX is Owned, Token {
     * @dev function to allocate all initial tokens to an address
     * @param _allocator - contract address
     */
-    function allocateTokens(address _allocator) returns (bool){
-        balances[_allocator] = totalSupply;
+    function allocateTokens(address _allocator) isOwner returns (bool){
+        if(balances[_allocator] > 0) throw; //check if allocation has been done before
+        if((balances[_allocator] + totalSupply) < totalSupply) throw; //check for overflow
+        balances[_allocator] = totalSupply; //allocate initial supply
         return true;
     }
 
