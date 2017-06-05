@@ -22,10 +22,10 @@ contract ConsensusX is Owned, Token {
     //Token token;
     address public consensusXAddr;
 
-    mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
+     mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
     mapping(address => AuthCaller[]) permittedPersonasPerDb; // List of Permitted personas
-    event EventAddedContract(bytes32, bool);
-    event DeleteContract(bytes32 name, bool success);
+    event EventAddedContract(bytes32 name, bool, uint _timestamp);
+    event DeleteContract(bytes32 name, bool success, uint _timestamp);
 
     struct AuthCaller {
         /*bytes32 name;
@@ -92,11 +92,11 @@ contract ConsensusX is Owned, Token {
     * @param _contractName Name of contract to be added
     * @param _contractAddress address of contract to be added
     */
-    function addContract(bytes32 _contractName, address _contractAddress) /* isOwner */ returns (bool) {
+    function addContract(bytes32 _contractName, address _contractAddress)  isOwner  returns (bool) {
         if (contracts[_contractName] != 0x0)
             return false;
         contracts[_contractName] = _contractAddress;
-        EventAddedContract(_contractName, true);
+        EventAddedContract(_contractName, true, now);
         return true;
     }
     
@@ -114,7 +114,7 @@ contract ConsensusX is Owned, Token {
     function removeContract(bytes32 contractName) isOwner returns (bool){ //isOwner modifier is inherited from the "Owned" contract
         if (contracts[contractName] == 0x0) return false;
         delete contracts[contractName];    //delete contract name from mapping
-        DeleteContract(contractName, true);
+        DeleteContract(contractName, true, now);
         return true;
     }
 
