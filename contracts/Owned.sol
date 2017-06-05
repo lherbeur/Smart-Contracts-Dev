@@ -2,14 +2,16 @@ pragma solidity ^0.4.11;
 
 contract Owned {
 
-	address owner;
+	address public owner;
+	address public ownedAddr;
 
     function Owned() {
 
-       owner = msg.sender;
+       //owner = msg.sender;
+       ownedAddr = this;
     }
 
-	function setOwner(address newOwner) isOwner {
+	function setOwner(address newOwner) public isOwner {
     	owner = newOwner;
 	}
 
