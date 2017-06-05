@@ -105,10 +105,11 @@ contract Token is Owned, ERC23  {
     */
     function transferToContract(address _to, uint _value, bytes _data) private returns (bool success) {
         if (balanceOf(msg.sender) < _value) throw;
-        TokenWallet receiver = TokenWallet(_to);
-        receiver.tokenFallback(msg.sender, _value, _data);
+        if((balances[_to] + _value) < _value) throw; //check for overflow
         balances[msg.sender] -= _value;
         balances[_to] += _value;
+        TokenWallet receiver = TokenWallet(_to);
+        receiver.tokenFallback(msg.sender, _value, _data);
         Transfer(msg.sender, _to, _value, _data);
         return true;
     }
@@ -122,6 +123,7 @@ contract Token is Owned, ERC23  {
     */
     function transferToAddress(address _to, uint _value, bytes _data) private returns (bool success) {
         if (balanceOf(msg.sender) < _value) throw;
+        if((balances[_to] + _value) < _value) throw; //check for overflow
         balances[msg.sender] -= _value;
         balances[_to] += _value;
         Transfer(msg.sender, _to, _value, _data);
