@@ -22,7 +22,7 @@ contract ConsensusX is Owned, Token {
     //Token token;
     address public consensusXAddr;
 
-     mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
+    mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
     mapping(address => AuthCaller[]) permittedPersonasPerDb; // List of Permitted personas
     event EventAddedContract(bytes32 name, bool, uint _timestamp);
     event DeleteContract(bytes32 name, bool success, uint _timestamp);
@@ -132,7 +132,7 @@ contract ConsensusX is Owned, Token {
 
 
     /// @dev Check the existence of an authorized caller address
-    function canCallConsX(address _personaDbAddress, address _callerAddress) private returns(bool) {
+    function canCallConsX(address _personaDbAddress, address _callerAddress) public returns(bool) {
         AuthCaller[] authCallers = permittedPersonasPerDb[_personaDbAddress];
 
         // check for existence of authorized caller address
