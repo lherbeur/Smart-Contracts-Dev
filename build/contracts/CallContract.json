@@ -1,0 +1,34 @@
+{
+  "contract_name": "CallContract",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "promise",
+          "type": "bytes32"
+        }
+      ],
+      "name": "furtherNothing",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "nothingFired",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x60606040523415600b57fe5b5b60958061001a6000396000f300606060405263ffffffff60e060020a6000350416630a258bf281146020575bfe5b3415602757fe5b60306004356032565b005b6040805182815290517feb4597562b667195216090ae1f8eda59bb2d65d0e2953c4c70799e4961a453a19181900360200190a15b505600a165627a7a723058206abd1af8117608749687df3342e0516a3d498b57dcf657993536aaffe0959a750029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1496791795019
+}

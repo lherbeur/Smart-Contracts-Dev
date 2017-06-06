@@ -1,0 +1,132 @@
+{
+  "contract_name": "Persona",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "returnPersonaBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_personaDbAddress",
+          "type": "address"
+        },
+        {
+          "name": "_authCallerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "permitAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_personaDbAddress",
+          "type": "address"
+        },
+        {
+          "name": "_callerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "checkPermitted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "Consensus",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "CallToTransfer",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "returnDeployerBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "deployer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_Consensus",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000c57fe5b60405160208061042483398101604052515b60008054600160a060020a03808416600160a060020a0319928316179092556001805433909316929091169190911790555b505b6103c3806100616000396000f300606060405236156100675763ffffffff60e060020a60003504166302d35faa81146100695780631802a88d1461008b57806371cec9e5146100c157806395b02dfa146100f7578063a5ddebe314610123578063b1fe2d4514610144578063d5f3948814610166575bfe5b341561007157fe5b610079610192565b60408051918252519081900360200190f35b341561009357fe5b6100ad600160a060020a0360043581169060243516610201565b604080519115158252519081900360200190f35b34156100c957fe5b6100ad600160a060020a036004358116906024351661027b565b604080519115158252519081900360200190f35b34156100ff57fe5b6101076102f5565b60408051600160a060020a039092168252519081900360200190f35b341561012b57fe5b610142600160a060020a0360043516602435610304565b005b341561014c57fe5b610079610377565b60408051918252519081900360200190f35b341561016e57fe5b610107610388565b60408051600160a060020a039092168252519081900360200190f35b60008054604080516020908101849052815160e060020a6327e235e3028152600160a060020a033081166004830152925192909316926327e235e3926024808301939282900301818787803b15156101e657fe5b6102c65a03f115156101f457fe5b5050604051519150505b90565b60008054604080516020908101849052815160e060020a63bb7df245028152600160a060020a03878116600483015286811660248301529251929093169263bb7df245926044808301939282900301818787803b151561025d57fe5b6102c65a03f1151561026b57fe5b5050604051519150505b92915050565b60008054604080516020908101849052815160e060020a63f9b76dd9028152600160a060020a03878116600483015286811660248301529251929093169263f9b76dd9926044808301939282900301818787803b151561025d57fe5b6102c65a03f1151561026b57fe5b5050604051519150505b92915050565b600054600160a060020a031681565b60008054604080516020908101849052815160e060020a63d4440991028152600160a060020a038781166004830152602482018790529251929093169363d44409919360448082019492918390030190829087803b151561036157fe5b6102c65a03f1151561036f57fe5b5050505b5050565b600154600160a060020a0316315b90565b600154600160a060020a0316815600a165627a7a72305820d5194b5782174ecf4e2fdf38d7f6b8415d8b4f42def4cfbc97c1c6e506f93cb30029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1496791795024
+}
