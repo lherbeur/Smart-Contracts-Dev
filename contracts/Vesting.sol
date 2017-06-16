@@ -27,7 +27,6 @@ contract Vesting  {
     }
 
     mapping (address => PersonaSchedule[]) public personaSchedules;
-    mapping (address => uint256) public currentIndexPointer;
 
     event Scheduled(bytes32 name, address addr, uint64 start, uint64 end, uint256 value, uint256 loggedBy);
 
@@ -77,13 +76,12 @@ contract Vesting  {
     * @param _personaAddr - persona address
     * @return arrays of name, start date, end date, cliff, value and time
     */
-    function getChunkedVestingSchedule (address _personaAddr)
+    function getChunkedVestingSchedule (address _personaAddr, uint256 _index)
     onlyConsensusX
     returns (bytes32[5] name, uint64[5] start, uint64[5] end, uint64[5] cliff, uint256[5] value, uint256[5] loggedBy)
     {
         PersonaSchedule [] schedules = personaSchedules[_personaAddr];
-        uint256 lowerIndex = currentIndexPointer[_personaAddr];
-        uint256 upperIndex = lowerIndex + 5;
+        uint256 upperIndex = _index + 5;
         uint arrayIndex = 0;
 
 
@@ -92,7 +90,7 @@ contract Vesting  {
           upperIndex = getVestingScheduleCount (_personaAddr);
         }
 
-        for (uint i=lowerIndex; i< upperIndex; i++)
+        for (uint i=_index; i< upperIndex; i++)
         {
           name[arrayIndex] = schedules[i].name;
           start[arrayIndex] = schedules[i].start;
@@ -103,9 +101,6 @@ contract Vesting  {
 
           ++arrayIndex;
         }
-
-        currentIndexPointer[_personaAddr] = upperIndex;
-
     }
 
 
