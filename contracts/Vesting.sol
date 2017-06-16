@@ -74,6 +74,7 @@ contract Vesting  {
     * @notice Get vesting schedules of `_personaAddr` in chunks of 5
     * @dev gets chunked vesting schedules of a persona address
     * @param _personaAddr - persona address
+    * @param _index - the pagination index
     * @return arrays of name, start date, end date, cliff, value and time
     */
     function getChunkedVestingSchedule (address _personaAddr, uint256 _index)
