@@ -4,7 +4,6 @@ Copyright SuperDAO Prep May 2017
 
 pragma solidity ^0.4.11;
 
-import "./Owned.sol";
 
 /** @title Vesting
 * @author Charles
@@ -14,7 +13,7 @@ import "./Owned.sol";
 * @author Emmanuel
 * @author Promise
 */
-contract Vesting is Owned {
+contract Vesting  {
 
     address public consensusXAddr;
 
@@ -27,9 +26,9 @@ contract Vesting is Owned {
         uint256 loggedBy;
     }
 
-    mapping (address => PersonaSchedule[]) public schedules;
+    mapping (address => PersonaSchedule[]) public personaSchedules;
 
-    event Scheduled(bytes32, address addr, uint64 start, uint64 end, uint256 value, uint256 loggedBy);
+    event Scheduled(bytes32 name, address addr, uint64 start, uint64 end, uint256 value, uint256 loggedBy);
 
 
     function Vesting (address _consensusX) {
@@ -57,7 +56,7 @@ contract Vesting is Owned {
         onlyConsensusX
         checkNewScheduleData(_start, _end, _cliff, _value)
         returns (uint) {
-        uint n = schedules[_to].push(PersonaSchedule(
+        uint n = personaSchedules[_to].push(PersonaSchedule(
             _name,
             _start,
             _end,
@@ -72,28 +71,39 @@ contract Vesting is Owned {
     }
 
     /**
-    * @notice Get vesting schedule of `_personaAddr` at index `index`
-    * @dev gets a vesting schedule, with specified index, of a persona address
+    * @notice Get vesting schedules of `_personaAddr` in chunks of 5
+    * @dev gets chunked vesting schedules of a persona address
     * @param _personaAddr - persona address
-    * @param index - index of schedules to get
-    * @return name, start date, end date, cliff, value and time schedule was added
+    * @param _index - the pagination index
+    * @return arrays of name, start date, end date, cliff, value and time
     */
-    function getVestingSchedulePerIndex (address _personaAddr, uint index)
+    function getChunkedVestingSchedule (address _personaAddr, uint256 _index)
     onlyConsensusX
-    isValidIndex(index)
-    constant
-    returns (bytes32, uint64, uint64, uint64, uint256, uint256)
+    returns (bytes32[5] name, uint64[5] start, uint64[5] end, uint64[5] cliff, uint256[5] value, uint256[5] loggedBy)
     {
-        PersonaSchedule personaSchedule = schedules[_personaAddr][index];
-        return(
-        personaSchedule.name,
-        personaSchedule.start,
-        personaSchedule.end,
-        personaSchedule.cliff,
-        personaSchedule.value,
-        personaSchedule.loggedBy
-        );
+        PersonaSchedule [] schedules = personaSchedules[_personaAddr];
+        uint256 upperIndex = _index + 5;
+        uint arrayIndex = 0;
+
+
+        if (upperIndex > getVestingScheduleCount (_personaAddr) - 1)
+        {
+          upperIndex = getVestingScheduleCount (_personaAddr);
+        }
+
+        for (uint i=_index; i< upperIndex; i++)
+        {
+          name[arrayIndex] = schedules[i].name;
+          start[arrayIndex] = schedules[i].start;
+          end[arrayIndex] = schedules[i].end;
+          cliff[arrayIndex] = schedules[i].cliff;
+          value[arrayIndex] = schedules[i].value;
+          loggedBy[arrayIndex] = schedules[i].loggedBy;
+
+          ++arrayIndex;
+        }
     }
+
 
     /**
     * @notice Get number of schedules for `_personaAddr`
@@ -106,7 +116,7 @@ contract Vesting is Owned {
     constant
     returns (uint256)
     {
-        return schedules[_personaAddr].length;
+        return (personaSchedules[_personaAddr].length);
     }
 
     /**
@@ -124,11 +134,6 @@ contract Vesting is Owned {
         _;
     }
 
-    modifier isValidIndex (uint index) {
-        require(index >= 0);
-        _;
-    }
-
     modifier checkNewScheduleData (
         uint64 _start,
         uint64 _end,
@@ -141,7 +146,7 @@ contract Vesting is Owned {
              && _value > 0);
          _;
     }
-    
+
     /// @dev fallback function
     function()
     {
