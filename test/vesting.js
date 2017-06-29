@@ -1,13 +1,13 @@
+
 var ConsensusX = artifacts.require("ConsensusX");
 var Vesting = artifacts.require("Vesting");
 // var DeployedAddresses = artifacts.require("DeployedAddresses");
 
 var consensusXAddr = "";
 
-contract('Vesting', function() { //consensusXAddr
+contract('Vesting', function() {
 
-  // it("should set ConsensusX addr", function() {
-
+  //assign schedule test
   it("should assignSchedule correctly", function() {
 
    var vestingInstance;
@@ -34,5 +34,22 @@ contract('Vesting', function() { //consensusXAddr
        assert.equal(lengthOfSchedules, schedulesCount, "Length of schedules not equal. Schedules not correctly assigned!");
      });
    });
+
+
+
+   //check consensusXAddr addr set properly
+   it("should set consensusXAddr correctly", function() {
+
+      var newConsensusXAddr = "0x0d0f0f0cb572cd346ee203d089fbcc2d792573ee";
+
+      return Vesting.new(consensusXAddr).then(function(instance) {
+
+          instance.setConsensusXAddr(newConsensusXAddr, { from: consensusXAddr}).then(function() {
+
+          assert.equal(consensusXAddr, newConsensusXAddr, "consensusXAddr not properly set!");
+        });
+      })
+    });
+
 
 });
