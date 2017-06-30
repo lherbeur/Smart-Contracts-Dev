@@ -9,7 +9,7 @@ contract TestConsensusX {
 
 
 	function testAddContract (){
-		ConsensusX con = new ConsensusX("Pokerium", 10, "$", "1.0", 3000000);
+		ConsensusX con = new ConsensusX(DeployedAddresses.Token());
 		bool expected = true;
 		address addr = 0x7ca8fb59a4959251798fd85718366da82b726087;
 
@@ -17,7 +17,7 @@ contract TestConsensusX {
 	}
 
 	function testgetContracts(){
-		ConsensusX con = new ConsensusX("Pokerium", 10, "$", "1.0", 3000000); 
+		ConsensusX con = new ConsensusX(DeployedAddresses.Token()); 
 		address expected = 0x0;
 
 		Assert.equal(con.getContracts("tosin"), expected, "Function should return null address");
