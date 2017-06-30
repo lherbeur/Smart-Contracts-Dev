@@ -14,10 +14,11 @@ module.exports = function(deployer) {
   deployer.deploy([TokenWallet,FalseWallet,Erc23,Owned]);
   deployer.link(Erc23,Token);
   deployer.link(Owned,[ConsensusX,Token]);
-  deployer.deploy(Token);
-  deployer.link(Token,ConsensusX);
-  deployer.deploy(ConsensusX, "Pokerium", 0.00010, "POK", "1.0", 3000000).then(function(){
-    deployer.link(ConsensusX,Persona);
-  	return deployer.deploy(Persona, ConsensusX.address);
+  deployer.deploy(Token, "Pokerium", 0.00010, "POK", "1.0", 3000000).then(function(){
+    deployer.link(Token,ConsensusX);
+    return deployer.deploy(ConsensusX, Token.address).then(function(){
+      deployer.link(ConsensusX,Persona);
+      return deployer.deploy(Persona, ConsensusX.address);
+    });
   });
 };
