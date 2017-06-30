@@ -8,13 +8,28 @@ var ConsensusX = artifacts.require("./ConsensusX"),
 
 contract('All Tests', function(accounts){
 
-  it("Should deploy all contracts", function(){
+  /*it("Should deploy all contracts", function(){
     return ConsensusX.deployed().then(function(instance){
       consxInstance = instance;
       console.log("ConsX deployed at: "+consxInstance.address);
       return Token.deployed().then(function(tinstance){
         toknInstance = tinstance;
         console.log("Token deployed at: "+tinstance.address);
+        return Persona.deployed().then(function(pinstance){
+          persona1 = pinstance;
+          console.log("Persona 1 deployed at: "+persona1.address);
+        });
+      });
+    });
+  });*/
+
+  it("Should deploy all contracts", function(){
+    return Token.deployed().then(function(tinstance){
+      toknInstance = tinstance;
+      console.log("Token deployed at: "+tinstance.address);
+      return ConsensusX.deployed().then(function(instance){
+        consxInstance = instance;
+        console.log("ConsX deployed at: "+consxInstance.address);
         return Persona.deployed().then(function(pinstance){
           persona1 = pinstance;
           console.log("Persona 1 deployed at: "+persona1.address);
@@ -28,12 +43,12 @@ contract('All Tests', function(accounts){
     .then(function(a){
       console.log( "Total token supply:",Number(a));
     })
-    .then(function(){
+    /*.then(function(){
       return consxInstance.totalSupply.call()
       .then(function(a){
       console.log( "ConsX Total token supply:",Number(a));
       });
-    });
+    });*/
   });
 
   /*
