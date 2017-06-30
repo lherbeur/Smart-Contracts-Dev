@@ -6,7 +6,7 @@ var TokenWallet = artifacts.require("TokenWallet");
 
 contract('Persona', function(accounts){
 	
-	it("it should send total Tokens to a Persona Contract", function(){
+	it.skip("it should send total Tokens to a Persona Contract", function(){
 		return TokenWallet.deployed().then(function(){
 			return ConsensusX.deployed().then(function(instance){
 				var consxInstance = instance;
