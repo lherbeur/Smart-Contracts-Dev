@@ -79,7 +79,13 @@ contract Vesting  {
     */
     function getChunkedVestingSchedule (address _personaAddr, uint256 _index)
     onlyConsensusX
-    returns (bytes32[5] name, uint64[5] start, uint64[5] end, uint64[5] cliff, uint256[5] value, uint256[5] loggedBy)
+    returns (
+        bytes32[5] name,
+        uint64[5] start,
+        uint64[5] end,
+        uint64[5] cliff,
+        uint256[5] value,
+        uint256[5] loggedBy)
     {
         PersonaSchedule [] schedules = personaSchedules[_personaAddr];
         uint256 upperIndex = _index + 5;
@@ -102,6 +108,8 @@ contract Vesting  {
 
           ++arrayIndex;
         }
+
+        return (name, start, end, cliff, value, loggedBy);
     }
 
 
