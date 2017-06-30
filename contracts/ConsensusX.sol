@@ -17,9 +17,9 @@ pragma solidity ^0.4.11;
 * @author Emmanuel
 * @author Promise
 */
-contract ConsensusX is Owned, Token {
+contract ConsensusX is Owned {
 
-    //Token token;
+    Token token;
     address public consensusXAddr;
 
     mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
@@ -36,15 +36,9 @@ contract ConsensusX is Owned, Token {
         //…
     }
 
-
-    function ConsensusX(
-        string tokenName,
-        uint8 decimalUnits,
-        string tokenSymbol,
-        string tokenVersion,
-        uint256 initialSupply
-    ) Token(tokenName, decimalUnits, tokenSymbol, tokenVersion, initialSupply) {
-        //token = Token(tokenAddress);
+    function ConsensusX(address tokenAddress) {
+        token = Token(tokenAddress);
+        consensusXAddr = this;
         owner = this; //setting ConsensusX address as owner of Owned
     }
     
@@ -55,7 +49,7 @@ contract ConsensusX is Owned, Token {
     * @param _value - amount of tokens
     */
     function callTransfer(address _to, uint _value) returns (bool){
-        if(transfer(_to, _value)) return true;
+        if(token.transfer(_to, _value)) return true;
         return false;
     }
     
@@ -63,12 +57,12 @@ contract ConsensusX is Owned, Token {
     * @dev function to allocate all initial tokens to an address
     * @param _allocator - contract address
     */
-    function allocateTokens(address _allocator) isOwner returns (bool){
-        if(balances[_allocator] > 0) throw; //check if allocation has been done before
-        if((balances[_allocator] + totalSupply) < totalSupply) throw; //check for overflow
-        balances[_allocator] = totalSupply; //allocate initial supply
+    /*function allocateTokens(address _allocator) isOwner returns (bool){
+        if(token.balances(_allocator) > 0) throw; //check if allocation has been done before
+        if((token.balances(_allocator) + token.totalSupply) < token.totalSupply) throw; //check for overflow
+        token.balances(_allocator) = token.totalSupply; //allocate initial supply
         return true;
-    }
+    }*/
 
     /**
     * @dev make low level function calls
