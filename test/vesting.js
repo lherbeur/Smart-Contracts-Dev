@@ -40,7 +40,12 @@ contract('Vesting', function() {
    //check consensusXAddr addr set properly
    it("should set consensusXAddr correctly", function() {
 
-      var newConsensusXAddr = "0x0d0f0f0cb572cd346ee203d089fbcc2d792573ee";
+      var newConsensusXAddr = "";
+
+      return ConsensusX.new().then(function(instance) {
+
+          newConsensusXAddr = instance.address;
+      });
 
       return Vesting.new(consensusXAddr).then(function(instance) {
 
