@@ -23,9 +23,9 @@ contract Persona {
     /**
     * @notice returns persona balance
     */
-    function returnPersonaBalance() constant returns (uint){
+    /* function returnPersonaBalance() constant returns (uint){
         return ConsensusX(Consensus).balances(this);
-    }
+    } */
 
     /**
     * @notice returns balance of address that deployed the contract
