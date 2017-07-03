@@ -19,8 +19,9 @@ pragma solidity ^0.4.11;
 */
 contract ConsensusX is Owned {
 
-    Token token;
+    Token public token;
     address public consensusXAddr;
+    bool public allocatedToken;
 
     mapping(bytes32 => address) contracts; // Contract names to contract addresses database mapping
     mapping(address => AuthCaller[]) permittedPersonasPerDb; // List of Permitted personas
@@ -40,6 +41,7 @@ contract ConsensusX is Owned {
         token = Token(tokenAddress);
         consensusXAddr = this;
         owner = this; //setting ConsensusX address as owner of Owned
+        allocatedToken = false; //as at deployment, token is not allocated for distribution
     }
     
     /**
@@ -53,16 +55,27 @@ contract ConsensusX is Owned {
         return false;
     }
     
+    function callApprove(address _owner, address _spender, uint256 _amount) returns (bool){
+        if(token.approve(_owner, _spender, _amount)) return true;
+        return false;
+    }
+    
     /**
     * @dev function to allocate all initial tokens to an address
-    * @param _allocator - contract address
+    * @param _allocator - contract address to send all tokens to 
     */
-    /*function allocateTokens(address _allocator) isOwner returns (bool){
-        if(token.balances(_allocator) > 0) throw; //check if allocation has been done before
-        if((token.balances(_allocator) + token.totalSupply) < token.totalSupply) throw; //check for overflow
-        token.balances(_allocator) = token.totalSupply; //allocate initial supply
-        return true;
-    }*/
+    function allocateTokens(address _allocator) isOwner returns (bool){
+        if(allocatedToken) throw;
+        if(token.allowed(this, _allocator) > 0) throw; //check if allocation has been done before
+        var value = token.totalSupply();
+        if(token.approve(this, _allocator, value)){ //allocate initial supply
+            TokenWallet spender = TokenWallet(_allocator);
+            spender.tokenFallback(this, value, "Initial Token Allocation");
+            allocatedToken = true;
+            return true;
+        }
+        return false;
+    }
 
     /**
     * @dev make low level function calls
