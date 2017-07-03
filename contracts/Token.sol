@@ -16,6 +16,15 @@ contract Token is Owned, ERC23  {
 
     /// @notice mapping to track amount of tokens each address holds
     mapping (address => uint256) public balances;
+    
+    /**
+    * @notice mapping to store contract addresses authorised to spend tokens 
+    * on behalf of an address anf maximun tokens they can spend
+    */  
+    mapping (address => mapping(address => uint)) public allowed;
+    
+    /// @notice event triggered when new amounts are approved for contract addresses
+    event Approval(address _sender, address _spender, uint _amount);
 
     /// @notice event triggered when tokens are transferred
     event Transfer(address indexed _from, address indexed _to, uint256 _value); //Transfer event
@@ -57,6 +66,34 @@ contract Token is Owned, ERC23  {
 
     function balanceOf(address _owner) constant returns (uint balance) {
         return balances[_owner];
+    }
+    
+    /**
+    * @dev function to set amount of tokens approved to zero 
+    * @param _owner address of token owner
+    * @param _spender contract address to spend tokens on behalf of owner
+    */
+    function approve(address _owner, address _spender) returns (bool success){
+        allowed[_owner][_spender] = 0;
+        Approval(_owner, _spender, 0);
+        return true;
+    }
+    
+    /**
+    * @dev function to set amount of tokens approved to desired value 
+    * @param _owner address of token owner
+    * @param _spender contract address to spend tokens on behalf of owner
+    * @param _amount value of tokens approved to be spent on owner behalf
+    */
+    function approve(address _owner, address _spender, uint256 _amount) returns (bool success) {
+        // To change the approve amount you first have to reduce the addresses´
+        //  allowance to zero by calling `approve(_spender,0)` if it is not
+        //  already 0 to mitigate the race condition described here:
+        //  https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+        if (!approve(_owner, _spender)) throw;
+        allowed[_owner][_spender] = _amount;
+        Approval(_owner, _spender, _amount);
+        return true;
     }
 
 
