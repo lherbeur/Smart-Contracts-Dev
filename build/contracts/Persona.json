@@ -1,0 +1,187 @@
+{
+  "contract_name": "Persona",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "returnPersonaBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_personaDbAddress",
+          "type": "address"
+        },
+        {
+          "name": "_authCallerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "permitAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_personaDbAddress",
+          "type": "address"
+        },
+        {
+          "name": "_callerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "checkPermitted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "Consensus",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "CallToTransfer",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "returnDeployerBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "deployer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_Consensus",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000c57fe5b60405160208061042483398101604052515b60008054600160a060020a03808416600160a060020a0319928316179092556001805433909316929091169190911790555b505b6103c3806100616000396000f300606060405236156100675763ffffffff60e060020a60003504166302d35faa81146100695780631802a88d1461008b57806371cec9e5146100c157806395b02dfa146100f7578063a5ddebe314610123578063b1fe2d4514610144578063d5f3948814610166575bfe5b341561007157fe5b610079610192565b60408051918252519081900360200190f35b341561009357fe5b6100ad600160a060020a0360043581169060243516610201565b604080519115158252519081900360200190f35b34156100c957fe5b6100ad600160a060020a036004358116906024351661027b565b604080519115158252519081900360200190f35b34156100ff57fe5b6101076102f5565b60408051600160a060020a039092168252519081900360200190f35b341561012b57fe5b610142600160a060020a0360043516602435610304565b005b341561014c57fe5b610079610377565b60408051918252519081900360200190f35b341561016e57fe5b610107610388565b60408051600160a060020a039092168252519081900360200190f35b60008054604080516020908101849052815160e060020a6327e235e3028152600160a060020a033081166004830152925192909316926327e235e3926024808301939282900301818787803b15156101e657fe5b6102c65a03f115156101f457fe5b5050604051519150505b90565b60008054604080516020908101849052815160e060020a63bb7df245028152600160a060020a03878116600483015286811660248301529251929093169263bb7df245926044808301939282900301818787803b151561025d57fe5b6102c65a03f1151561026b57fe5b5050604051519150505b92915050565b60008054604080516020908101849052815160e060020a63f9b76dd9028152600160a060020a03878116600483015286811660248301529251929093169263f9b76dd9926044808301939282900301818787803b151561025d57fe5b6102c65a03f1151561026b57fe5b5050604051519150505b92915050565b600054600160a060020a031681565b60008054604080516020908101849052815160e060020a63d4440991028152600160a060020a038781166004830152602482018790529251929093169363d44409919360448082019492918390030190829087803b151561036157fe5b6102c65a03f1151561036f57fe5b5050505b5050565b600154600160a060020a0316315b90565b600154600160a060020a0316815600a165627a7a72305820d04fbe502791f55cdfacb044e252c78a300ed38f0aea902ff2e5751b970a57b40029",
+  "networks": {
+    "1497634584640": {
+      "events": {},
+      "links": {},
+      "address": "0x44abe6012c1f90aad3c7c031f642a3e807733f6f",
+      "updated_at": 1497996379620
+    },
+    "1498001016698": {
+      "events": {},
+      "links": {},
+      "address": "0x45d98d6a213cc40c48a5a59edb95f89bc5f1259f",
+      "updated_at": 1498001208452
+    },
+    "1498001902504": {
+      "events": {},
+      "links": {},
+      "address": "0x4d15a4664eec0875d80ad9a8f6d76c9393795400",
+      "updated_at": 1498001936684
+    },
+    "1498174128853": {
+      "events": {},
+      "links": {},
+      "address": "0x376ce290afd4bc33d53f6c7b3a76469ae1ab509e",
+      "updated_at": 1498174879597
+    },
+    "1498175057491": {
+      "events": {},
+      "links": {},
+      "address": "0xe3b529c39d720bf3de63989ab851ee807aa68c9e",
+      "updated_at": 1498175092168
+    },
+    "1498175278001": {
+      "events": {},
+      "links": {},
+      "address": "0xc9d26a7634a11957f3d96df5b6b896a166605ebd",
+      "updated_at": 1498175308955
+    },
+    "1498252162340": {
+      "events": {},
+      "links": {},
+      "address": "0x0e61bdf7c66dc80c8ea38be2ee8f3581a4852d6f",
+      "updated_at": 1498252183472
+    },
+    "1498647208164": {
+      "events": {},
+      "links": {},
+      "address": "0x93b806eeaa8bf5c48b62778a96710557a6eb341a",
+      "updated_at": 1498647240664
+    },
+    "1498864080589": {
+      "events": {},
+      "links": {},
+      "address": "0x894176d5710fb3a9e874426dc9287370288fda44",
+      "updated_at": 1498864655282
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1498864655282
+}
