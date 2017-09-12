@@ -16,19 +16,38 @@ contract Persona is Owned {
     mapping (bytes8 => Token) public tokenMapping;
     uint8[] public tokenKeys;
     
+    event LogEtherSent(address recipient, uint amount, uint balance);
+    event LogEtherReceived(address sender, uint amount, uint balance);
+    
     function Persona(address ConsensusxAddr) {
         personaOwner = ConsensusxAddr;
     }
     
-    function addTokens(address tokenAddr) {
+    function addTokens(address tokenAddr) returns (bool) {
         
     }
     
-    function removeTokens(address tokenAddr) {
+    function removeTokens(address tokenAddr) returns (bool) {
         
     }
     
-    function doesTokenExist(bytes8 symbol) {
+    function doesTokenExist(bytes8 symbol) returns (bool) {
+        
+    }
+    
+    function sendEther(uint amount) returns (bool) {
+        
+    }
+    
+    function receiveEther(uint amount) payable returns (bool) {
+        
+    }
+    
+    function displayEthBalance() constant returns (uint) {
+        
+    }
+    
+    function displayTokenBalance(bytes32 symbol, address tokenAddress) constant returns (uint) {
         
     }
 
