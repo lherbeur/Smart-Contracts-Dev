@@ -3,8 +3,9 @@ pragma solidity ^0.4.11;
 import "./Owned.sol";
 import "./library/token/ERC23.sol";
 import "./library/TokenWallet.sol";
+import "./library/SafeMath.sol";
 
-contract Token is Owned, ERC23  {
+contract Token is Owned, ERC23, SafeMath  {
     //conforming to the ERC20 /223 standard
 
     string public name;             //token name
@@ -16,13 +17,13 @@ contract Token is Owned, ERC23  {
 
     /// @notice mapping to track amount of tokens each address holds
     mapping (address => uint256) public balances;
-
+    
     /**
-    * @notice mapping to store contract addresses authorised to spend tokens
+    * @notice mapping to store contract addresses authorised to spend tokens 
     * on behalf of an address anf maximun tokens they can spend
-    */
+    */  
     mapping (address => mapping(address => uint)) public allowed;
-
+    
     /// @notice event triggered when new amounts are approved for contract addresses
     event Approval(address _sender, address _spender, uint _amount);
 
@@ -67,9 +68,11 @@ contract Token is Owned, ERC23  {
     function balanceOf(address _owner) constant returns (uint balance) {
         return balances[_owner];
     }
-
+    
+    // ERC20 Standard functions
+    
     /**
-    * @dev function to set amount of tokens approved to zero
+    * @dev function to set amount of tokens approved to zero 
     * @param _owner address of token owner
     * @param _spender contract address to spend tokens on behalf of owner
     */
@@ -78,9 +81,9 @@ contract Token is Owned, ERC23  {
         Approval(_owner, _spender, 0);
         return true;
     }
-
+    
     /**
-    * @dev function to set amount of tokens approved to desired value
+    * @dev function to set amount of tokens approved to desired value 
     * @param _owner address of token owner
     * @param _spender contract address to spend tokens on behalf of owner
     * @param _amount value of tokens approved to be spent on owner behalf
@@ -94,6 +97,33 @@ contract Token is Owned, ERC23  {
         allowed[_owner][_spender] = _amount;
         Approval(_owner, _spender, _amount);
         return true;
+    }
+    
+    
+    // ERC223 standard functions
+    
+    /**
+    * @notice function that is called when a user or another contract wants to transfer funds
+    * @dev ERC23 version of transfer where callback to handle tokens is supplied
+    * @param _to address where token will be sent
+    * @param _value amount of tokens
+    * @param _data - information that accompanies transactions
+    * @param _custom_fallback callback function
+    */
+    function transfer(address _to, uint _value, bytes _data, string _custom_fallback) returns (bool success) {
+      
+        if(isContract(_to)) {
+            if (balanceOf(msg.sender) < _value) throw;
+            balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
+            balances[_to] = safeAdd(balanceOf(_to), _value);
+            Persona receiver = Persona(_to);
+            receiver.call.value(0)(bytes4(sha3(_custom_fallback)), msg.sender, _value, _data);
+            Transfer(msg.sender, _to, _value, _data);
+            return true;
+        }
+        else {
+            return transferToAddress(_to, _value, _data);
+        }
     }
 
 
@@ -142,10 +172,9 @@ contract Token is Owned, ERC23  {
     */
     function transferToContract(address _to, uint _value, bytes _data) private returns (bool success) {
         if (balanceOf(msg.sender) < _value) throw;
-        if((balances[_to] + _value) < _value) throw; //check for overflow
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
-        TokenWallet receiver = TokenWallet(_to);
+        balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
+        balances[_to] = safeAdd(balanceOf(_to), _value);
+        Persona receiver = Persona(_to);
         receiver.tokenFallback(msg.sender, _value, _data);
         Transfer(msg.sender, _to, _value, _data);
         return true;
@@ -160,16 +189,15 @@ contract Token is Owned, ERC23  {
     */
     function transferToAddress(address _to, uint _value, bytes _data) private returns (bool success) {
         if (balanceOf(msg.sender) < _value) throw;
-        if((balances[_to] + _value) < _value) throw; //check for overflow
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
+        balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
+        balances[_to] = safeAdd(balanceOf(_to), _value);
         Transfer(msg.sender, _to, _value, _data);
         return true;
     }
 
 
     /**
-    * @dev function that determines if given address belongs to a contract or
+    * @dev function that determines if given address belongs to a contract or 
     * external address - this function assembles the given address bytecode, if the
     *  bytecode exists, then _addr is a contract.
     * @param _addr address of either a conract or external account
