@@ -3,6 +3,7 @@ pragma solidity ^0.4.11;
 import "./Owned.sol";
 import "./library/token/ERC23.sol";
 import "./library/TokenWallet.sol";
+import "./library/SafeMath.sol";
 
 contract Token is Owned, ERC23  {
     //conforming to the ERC20 /223 standard
