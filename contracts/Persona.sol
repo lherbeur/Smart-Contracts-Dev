@@ -6,12 +6,12 @@ import "./ConsensusX.sol";
 contract Persona is Owned {
 
     address public personaOwner;
-    /*struct Token {
+    struct Token {
         string name;
         string symbol;
         address tokenAddress;
         uint value;
-    }*/
+    }
 
     mapping (bytes8 => address) public supportedTokens;//maps d SYM of d token & the token contract address
     //mapping (bytes8 => Token) public tokenMapping;
