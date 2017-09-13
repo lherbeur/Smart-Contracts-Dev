@@ -11,9 +11,10 @@ contract Persona is Owned {
         string symbol;
         address tokenAddress;
         uint value;
+        mapping (address => bytes) data;
     } 
     
-    mapping (bytes8 => Token) public tokenMapping;
+    mapping (bytes8 => Token) public tokenMapping; //list of tokens supported
     uint8[] public tokenKeys;
     
     event LogEtherSent(address recipient, uint amount, uint balance);
@@ -23,11 +24,15 @@ contract Persona is Owned {
         personaOwner = ConsensusxAddr;
     }
     
-    function addTokens(address tokenAddr) returns (bool) {
+    function addToken(address tokenAddr) returns (bool) {
         
     }
     
-    function removeTokens(address tokenAddr) returns (bool) {
+    function removeToken(address tokenAddr) returns (bool) {
+        
+    }
+    
+    function modifyToken(address tokenAddr) returns (bool) {
         
     }
     
@@ -39,9 +44,21 @@ contract Persona is Owned {
         
     }
     
-    function receiveEther(uint amount) payable returns (bool) {
-        
+    /**  
+    * @dev fallback function to be called (ERC223 standard) 
+    * @param _from address of oken sender
+    * @param _value amount of Tokens sent
+    * @param _data data sent with transaction
+    */
+    function tokenFallback(address _from, uint _value, bytes _data){
+        //check if token is supported or exists in record
+        //call addTokens if it does not, modifyTokens if it does.
+        Token tkn;
+        tkn.value = _value;
+        tkn.data[_from] = _data;
     }
+    
+    // constant getter functions
     
     function displayEthBalance() constant returns (uint) {
         
@@ -51,7 +68,7 @@ contract Persona is Owned {
         
     }
 
-    function() {
-        throw;
+    function() payable {
+        LogEtherReceived(msg.sender, msg.value, this.balance);
     }
 }
