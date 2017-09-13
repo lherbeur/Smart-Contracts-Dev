@@ -6,21 +6,24 @@ import "./ConsensusX.sol";
 contract Persona is Owned {
 
     address public personaOwner;
-    struct Token {
+    /*struct Token {
         string name;
         string symbol;
         address tokenAddress;
         uint value;
         mapping (address => bytes) data;
-    } 
+    } */
     
-    mapping (bytes8 => Token) public tokenMapping; //list of tokens supported
+    mapping (bytes8 => address) public supportedTokens;//maps d SYM of d token & the token contract address
+    //mapping (bytes8 => Token) public tokenMapping;
+
     uint8[] public tokenKeys;
-    
+
     event LogEtherSent(address recipient, uint amount, uint balance);
     event LogEtherReceived(address sender, uint amount, uint balance);
-    
+
     function Persona(address ConsensusxAddr) {
+
         personaOwner = ConsensusxAddr;
     }
     
@@ -34,14 +37,25 @@ contract Persona is Owned {
     
     function modifyToken(address tokenAddr) returns (bool) {
         
+
+    function addToken(bytes8 tokenSymbol, address tokenAddr) returns (bool) {
+
+      supportedTokens[tokenSymbol] = tokenAddr;
+      return true;
     }
-    
+
+    function removeToken(bytes32 tokenSymbol) returns (bool) {
+
+      delete supportedTokens[tokenSymbol];
+      return true;
+    }
+
     function doesTokenExist(bytes8 symbol) returns (bool) {
-        
+
     }
-    
+
     function sendEther(uint amount) returns (bool) {
-        
+
     }
     
     /**  
@@ -59,13 +73,12 @@ contract Persona is Owned {
     }
     
     // constant getter functions
-    
     function displayEthBalance() constant returns (uint) {
-        
+
     }
-    
+
     function displayTokenBalance(bytes32 symbol, address tokenAddress) constant returns (uint) {
-        
+
     }
 
     function() payable {
