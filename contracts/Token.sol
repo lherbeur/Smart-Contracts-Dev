@@ -16,13 +16,13 @@ contract Token is Owned, ERC23  {
 
     /// @notice mapping to track amount of tokens each address holds
     mapping (address => uint256) public balances;
-    
+
     /**
-    * @notice mapping to store contract addresses authorised to spend tokens 
+    * @notice mapping to store contract addresses authorised to spend tokens
     * on behalf of an address anf maximun tokens they can spend
-    */  
+    */
     mapping (address => mapping(address => uint)) public allowed;
-    
+
     /// @notice event triggered when new amounts are approved for contract addresses
     event Approval(address _sender, address _spender, uint _amount);
 
@@ -67,9 +67,9 @@ contract Token is Owned, ERC23  {
     function balanceOf(address _owner) constant returns (uint balance) {
         return balances[_owner];
     }
-    
+
     /**
-    * @dev function to set amount of tokens approved to zero 
+    * @dev function to set amount of tokens approved to zero
     * @param _owner address of token owner
     * @param _spender contract address to spend tokens on behalf of owner
     */
@@ -78,9 +78,9 @@ contract Token is Owned, ERC23  {
         Approval(_owner, _spender, 0);
         return true;
     }
-    
+
     /**
-    * @dev function to set amount of tokens approved to desired value 
+    * @dev function to set amount of tokens approved to desired value
     * @param _owner address of token owner
     * @param _spender contract address to spend tokens on behalf of owner
     * @param _amount value of tokens approved to be spent on owner behalf
@@ -169,7 +169,7 @@ contract Token is Owned, ERC23  {
 
 
     /**
-    * @dev function that determines if given address belongs to a contract or 
+    * @dev function that determines if given address belongs to a contract or
     * external address - this function assembles the given address bytecode, if the
     *  bytecode exists, then _addr is a contract.
     * @param _addr address of either a conract or external account
