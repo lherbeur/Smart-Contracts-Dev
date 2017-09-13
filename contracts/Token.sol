@@ -5,7 +5,7 @@ import "./library/token/ERC23.sol";
 import "./library/TokenWallet.sol";
 import "./library/SafeMath.sol";
 
-contract Token is Owned, ERC23  {
+contract Token is Owned, ERC23, SafeMath  {
     //conforming to the ERC20 /223 standard
 
     string public name;             //token name
@@ -69,6 +69,8 @@ contract Token is Owned, ERC23  {
         return balances[_owner];
     }
     
+    // ERC20 Standard functions
+    
     /**
     * @dev function to set amount of tokens approved to zero 
     * @param _owner address of token owner
@@ -95,6 +97,33 @@ contract Token is Owned, ERC23  {
         allowed[_owner][_spender] = _amount;
         Approval(_owner, _spender, _amount);
         return true;
+    }
+    
+    
+    // ERC223 standard functions
+    
+    /**
+    * @notice function that is called when a user or another contract wants to transfer funds
+    * @dev ERC23 version of transfer where callback to handle tokens is supplied
+    * @param _to address where token will be sent
+    * @param _value amount of tokens
+    * @param _data - information that accompanies transactions
+    * @param _custom_fallback callback function
+    */
+    function transfer(address _to, uint _value, bytes _data, string _custom_fallback) returns (bool success) {
+      
+        if(isContract(_to)) {
+            if (balanceOf(msg.sender) < _value) throw;
+            balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
+            balances[_to] = safeAdd(balanceOf(_to), _value);
+            Persona receiver = Persona(_to);
+            receiver.call.value(0)(bytes4(sha3(_custom_fallback)), msg.sender, _value, _data);
+            Transfer(msg.sender, _to, _value, _data);
+            return true;
+        }
+        else {
+            return transferToAddress(_to, _value, _data);
+        }
     }
 
 
@@ -143,10 +172,9 @@ contract Token is Owned, ERC23  {
     */
     function transferToContract(address _to, uint _value, bytes _data) private returns (bool success) {
         if (balanceOf(msg.sender) < _value) throw;
-        if((balances[_to] + _value) < _value) throw; //check for overflow
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
-        TokenWallet receiver = TokenWallet(_to);
+        balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
+        balances[_to] = safeAdd(balanceOf(_to), _value);
+        Persona receiver = Persona(_to);
         receiver.tokenFallback(msg.sender, _value, _data);
         Transfer(msg.sender, _to, _value, _data);
         return true;
@@ -161,9 +189,8 @@ contract Token is Owned, ERC23  {
     */
     function transferToAddress(address _to, uint _value, bytes _data) private returns (bool success) {
         if (balanceOf(msg.sender) < _value) throw;
-        if((balances[_to] + _value) < _value) throw; //check for overflow
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
+        balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
+        balances[_to] = safeAdd(balanceOf(_to), _value);
         Transfer(msg.sender, _to, _value, _data);
         return true;
     }
