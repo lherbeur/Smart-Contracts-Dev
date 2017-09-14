@@ -7,7 +7,7 @@ import './ConsensusX.sol';
 * @author Promise
 * @author Michael
 */
-contract ContractBank {
+contract ContractBank is Owned {
 
     address public consensusXAddress; // current consensusXAddress, used to retrieve function for checking allowed personas
 
@@ -25,6 +25,10 @@ contract ContractBank {
 
     function ContractBank (address consensusXAddr) {
         consensusXAddress = consensusXAddr;
+    }
+
+    function setNewConsensusXAddress(address addr) isOwner{
+        consensusXAddress = addr;
     }
 
     /**
