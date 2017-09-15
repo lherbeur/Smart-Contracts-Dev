@@ -69,7 +69,7 @@ contract ConsensusX is Owned {
         if(token.allowed(this, _allocator) > 0) throw; //check if allocation has been done before
         var value = token.totalSupply();
         if(token.approve(this, _allocator, value)){ //allocate initial supply
-            TokenWallet spender = TokenWallet(_allocator);
+            Persona spender = Persona(_allocator);
             spender.tokenFallback(this, value, "Initial Token Allocation");
             allocatedToken = true;
             return true;
