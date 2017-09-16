@@ -33,14 +33,14 @@ contract ContractBank is Owned {
 
     /**
     * @dev function to upload a new contract to database
-    * @param contractName name of the contract being uploaded to database
-    * @param personalDbAddress ....
+    * @param _contractName name of the contract being uploaded to database
+    * @param _personalDbAddress ....
     * @param _byteCode bytecode of the contract being uploaded to database
     * @param _gasCost gas cost for the contract being uploaded to database
     * @param _contractAddress address of the contract being uploaded to database
     * @param _contractInterface interface of the contract being uploaded to database
     */
-    function storeContract (
+    function UploadContract (
         bytes32 _contractName,
         address _personalDbAddress,
         bytes32 _byteCode,
@@ -53,6 +53,15 @@ contract ContractBank is Owned {
         contractKeys.push(_contractName); //store occupied contract keys
 
         contractStored(_contractName, _contractAddress);
+    }
+
+    // Function for deploying a contract with Assembly
+    function DeployContract (bytes32 identifier) {
+
+    }
+
+    function () {
+        revert();
     }
 
 }
