@@ -7,7 +7,7 @@ import './ConsensusX.sol';
 * @author Promise
 * @author Michael
 */
-contract ContractBank is Owned {
+contract ContractBank is Owned(true) {
 
     address public consensusXAddress; // current consensusXAddress, used to retrieve function for checking allowed personas
 

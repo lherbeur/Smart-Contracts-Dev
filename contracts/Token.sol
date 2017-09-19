@@ -5,7 +5,7 @@ import "./library/token/ERC23.sol";
 import "./library/TokenWallet.sol";
 import "./library/SafeMath.sol";
 
-contract Token is Owned, ERC23, SafeMath  {
+contract Token is Owned(true), ERC23, SafeMath  {
     //conforming to the ERC20 /223 standard
 
     string public name;             //token name
@@ -17,13 +17,13 @@ contract Token is Owned, ERC23, SafeMath  {
 
     /// @notice mapping to track amount of tokens each address holds
     mapping (address => uint256) public balances;
-    
+
     /**
-    * @notice mapping to store contract addresses authorised to spend tokens 
+    * @notice mapping to store contract addresses authorised to spend tokens
     * on behalf of an address anf maximun tokens they can spend
-    */  
+    */
     mapping (address => mapping(address => uint)) public allowed;
-    
+
     /// @notice event triggered when new amounts are approved for contract addresses
     event Approval(address _sender, address _spender, uint _amount);
 
@@ -68,11 +68,11 @@ contract Token is Owned, ERC23, SafeMath  {
     function balanceOf(address _owner) constant returns (uint balance) {
         return balances[_owner];
     }
-    
+
     // ERC20 Standard functions
-    
+
     /**
-    * @dev function to set amount of tokens approved to zero 
+    * @dev function to set amount of tokens approved to zero
     * @param _owner address of token owner
     * @param _spender contract address to spend tokens on behalf of owner
     */
@@ -81,9 +81,9 @@ contract Token is Owned, ERC23, SafeMath  {
         Approval(_owner, _spender, 0);
         return true;
     }
-    
+
     /**
-    * @dev function to set amount of tokens approved to desired value 
+    * @dev function to set amount of tokens approved to desired value
     * @param _owner address of token owner
     * @param _spender contract address to spend tokens on behalf of owner
     * @param _amount value of tokens approved to be spent on owner behalf
@@ -98,10 +98,10 @@ contract Token is Owned, ERC23, SafeMath  {
         Approval(_owner, _spender, _amount);
         return true;
     }
-    
-    
+
+
     // ERC223 standard functions
-    
+
     /**
     * @notice function that is called when a user or another contract wants to transfer funds
     * @dev ERC23 version of transfer where callback to handle tokens is supplied
@@ -111,7 +111,7 @@ contract Token is Owned, ERC23, SafeMath  {
     * @param _custom_fallback callback function
     */
     function transfer(address _to, uint _value, bytes _data, string _custom_fallback) returns (bool success) {
-      
+
         if(isContract(_to)) {
             if (balanceOf(msg.sender) < _value) throw;
             balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
@@ -197,7 +197,7 @@ contract Token is Owned, ERC23, SafeMath  {
 
 
     /**
-    * @dev function that determines if given address belongs to a contract or 
+    * @dev function that determines if given address belongs to a contract or
     * external address - this function assembles the given address bytecode, if the
     *  bytecode exists, then _addr is a contract.
     * @param _addr address of either a conract or external account

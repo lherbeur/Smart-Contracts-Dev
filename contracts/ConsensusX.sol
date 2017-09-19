@@ -6,7 +6,7 @@ pragma solidity ^0.4.11;
 
  import "./Token.sol";
  import "./Owned.sol";
-
+ import "./Persona.sol";
 
 
 /** @title ConsensusX
@@ -17,7 +17,7 @@ pragma solidity ^0.4.11;
 * @author Emmanuel
 * @author Promise
 */
-contract ConsensusX is Owned {
+contract ConsensusX is Owned(true) {
 
     Token public token;
     address public consensusXAddr;
@@ -43,7 +43,7 @@ contract ConsensusX is Owned {
         owner = this; //setting ConsensusX address as owner of Owned
         allocatedToken = false; //as at deployment, token is not allocated for distribution
     }
-    
+
     /**
     * @dev This function serves as an access for other contracts to call
     *    the Tokens's transfer function for contracts following ERC20 spec
@@ -54,15 +54,15 @@ contract ConsensusX is Owned {
         if(token.transfer(_to, _value)) return true;
         return false;
     }
-    
+
     function callApprove(address _owner, address _spender, uint256 _amount) returns (bool){
         if(token.approve(_owner, _spender, _amount)) return true;
         return false;
     }
-    
+
     /**
     * @dev function to allocate all initial tokens to an address
-    * @param _allocator - contract address to send all tokens to 
+    * @param _allocator - contract address to send all tokens to
     */
     function allocateTokens(address _allocator) isOwner returns (bool){
         if(allocatedToken) throw;
@@ -106,8 +106,8 @@ contract ConsensusX is Owned {
         EventAddedContract(_contractName, true, now);
         return true;
     }
-    
-     /** @dev Get contract address corresponding to name 
+
+     /** @dev Get contract address corresponding to name
     * @param contractName - Name of contract to be added
     */
     function getContracts(bytes32 contractName) constant returns (address){
