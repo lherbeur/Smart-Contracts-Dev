@@ -67,6 +67,38 @@ contract Persona is Owned(true) {
     }
 
     /**
+    * @notice function to send ether to a contract address 
+    * @dev function implements withdrawal pattern to prevent attackers from 
+    *   causing the contract, also prevent reentrancy
+    */
+    function withdraw() returns (bool) {
+        uint amount = maxWithdrawal[msg.sender];
+        maxWithdrawal[msg.sender] = 0;
+        msg.sender.transfer(amount);
+    }
+    
+    /**
+    * @notice function to change maximum value a contract can withdraw to zero
+    * @param addr contract address
+    */
+    function changeWithdrawal(address addr) returns (bool) {
+        maxWithdrawal[addr] = 0;
+    }
+    
+    /**
+    * @notice function to change maximum value a contract can withdraw from
+    *   zero to a given value
+    * @param addr contract address
+    * @param value maximum amount of ether that can be sent
+    */
+    function changeWithdrawal(address addr, uint value) returns (bool) {
+        if(maxWithdrawal[addr] != 0) {
+            changeWithdrawal(addr);
+        }
+        maxWithdrawal[addr] = value;
+    }
+
+    /**
     * @notice function that is called when a user or another contract wants to
     *   transfer funds with no data
     * @dev ERC23 version of transfer with no _data
