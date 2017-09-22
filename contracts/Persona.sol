@@ -233,7 +233,7 @@ contract Persona is Owned {
           tkn.data = _data;
           tkn.sig = getSignature(_data);
 
-          supportedTokens[msg.sender].push(tkn);
+          supportedTokens[msg.sender] = tkn;
         }
 
         //i guess we basically need addr and val to b in d storage...we might, as well, just strip d token struct of oda elements
