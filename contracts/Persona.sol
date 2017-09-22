@@ -6,18 +6,21 @@ import "./ConsensusX.sol";
 contract Persona is Owned {
 
     address public personaOwner;
+
     struct Token {
         string name;
-        string symbol;
+        bytes8 symbol;
         address tokenAddress;
         address senderAddress;
         address txOriginAddress;
         uint value;
-        mapping (address => bytes) data;
-        mapping (address => bytes4) sig;
+        bytes data;
+        bytes4 sig;
+        /*mapping (address => bytes) data;
+        mapping (address => bytes4) sig;*/
     }
 
-   mapping (bytes8 => address) public supportedTokens;//maps d SYM of d token & the token contract address
+    mapping (address => Token) public supportedTokens;//maps d token contract address to token struct
     //mapping (bytes8 => Token) public tokenMapping;
 
     uint8[] public tokenKeys;
@@ -29,22 +32,26 @@ contract Persona is Owned {
         personaOwner = ConsensusxAddr;
     }
 
-    function addToken(bytes8 tokenSymbol, address tokenAddr) returns (bool) {
+    /*function addToken(bytes8 tokenSymbol, address tokenAddr) returns (bool) {
       supportedTokens[tokenSymbol] = tokenAddr;
       return true;
-    }
+    }*/
 
-    function removeToken(bytes8 tokenSymbol) returns (bool) {
+    /*function removeToken(bytes8 tokenSymbol) returns (bool) {
       delete supportedTokens[tokenSymbol];
       return true;
-    }
+    }*/
 
-    function modifyToken(address tokenAddr) returns (bool) {
+    /*function modifyToken(address tokenAddr) returns (bool) {
 
-    }
+    }*/
 
-    function doesTokenExist(bytes8 symbol) returns (bool) {
+    function doesTokenExist(address tokenAddr) returns (bool) {
 
+      if (supportedTokens[tokenAddr].tokenAddress != 0x0)
+        return true;
+      else
+        return false;
     }
 
     function sendEther(uint amount) returns (bool) {
@@ -118,16 +125,35 @@ contract Persona is Owned {
 
     /**
     * @dev fallback function to be called (ERC223 standard)
-    * @param _from address of oken sender
+    * @param _from address of token sender
     * @param _value amount of Tokens sent
     * @param _data data sent with transaction
     */
     function tokenFallback(address _from, uint _value, bytes _data){
         //check if token is supported or exists in record
         //call addTokens if it does not, modifyTokens if it does.
-        Token tkn;
-        tkn.value = _value;
-        tkn.data[_from] = _data;
+
+        if (doesTokenExist(msg.sender))
+        {
+          supportedTokens[msg.sender].value += _value;
+        }
+        else
+        {
+          Token tkn;
+
+          /*tkn.name =  */
+          /*tkn.symbol*/
+          tkn.tokenAddress = msg.sender;
+          tkn.senderAddress = _from;
+          tkn.txOriginAddress = tx.origin;
+          tkn.value = _value;
+          tkn.data = _data;
+          tkn.sig = getSignature(_data);
+
+          supportedTokens[msg.sender].push(tkn);
+        }
+
+        //i guess we basically need addr and val to b in d storage...we might, as well, just strip d token struct of oda elements
     }
 
 }

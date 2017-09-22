@@ -5,18 +5,24 @@ contract Owned {
 	address public owner;
 	address public ownedAddr;
 
-    function Owned() {
-
-       //owner = msg.sender;
+    function Owned(bool s) {
+        if (s) {
+            owner = msg.sender;
+        }
        ownedAddr = this;
     }
 
-	function setOwner(address newOwner) public isOwner {
-    	owner = newOwner;
+    /**
+     * @dev function to change the owner of contract's address, must be called from current owners address
+     * @param _owner the new owner's address
+     */
+	function setOwner(address _owner) internal isOwner {
+    	owner = _owner;
 	}
 
 	modifier isOwner() {
-	    require(msg.sender != owner);
+	    if (owner != 0x0)
+	    require(msg.sender == owner);
 	    _;
 	}
 
