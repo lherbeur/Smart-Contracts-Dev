@@ -47,8 +47,23 @@ contract Persona is Owned(true) {
 
     }
 
-    function sendEther(uint amount) returns (bool) {
-
+     /**
+    * @notice function to send ether to a normal address 
+    * @dev function checks if address supplied is contract address, if yes, 
+    *   it throws
+    * @param addr address where ether will be sent
+    * @param amount value of ether
+    */
+    function sendEther(uint amount, address addr) returns (bool) {
+        if(isContract(addr) == true) throw;
+        if(this.balance == 0) throw;
+        if((this.balance - amount) < 0) throw;
+        if(addr.send(amount) == true){
+            LogEtherSent(addr, amount, this.balance);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -108,6 +123,24 @@ contract Persona is Owned(true) {
         Token tkn;
         tkn.value = _value;
         tkn.data[_from] = _data;
+    }
+
+    /**
+    * @notice function to check if an address belongs to a contract 
+    * @dev function uses assembly to check for a contract address
+    */
+    function isContract(address _addr) private returns (bool is_contract) {
+        uint length;
+        assembly {
+            //retrieve the size of the code on target address, this needs assembly
+            length := extcodesize(_addr)
+        }
+        if(length>0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     function getSignature(bytes _data) returns (bytes4 sig) {
