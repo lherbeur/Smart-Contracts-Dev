@@ -30,12 +30,22 @@ contract Persona is Owned(true) {
         personaOwner = ConsensusxAddr;
     }
 
+    /**
+    * @notice function to add supported ERC23 tokens to mapping 
+    * @param tokenSymbol token symbol
+    * @param tokenAddr token address
+    */
     function addToken(bytes8 tokenSymbol, address tokenAddr) returns (bool) {
       supportedTokens[tokenSymbol] = tokenAddr;
       return true;
     }
-
-    function removeToken(bytes8 tokenSymbol) returns (bool) {
+    
+    /**
+    * @notice function to remove supported ERC23 tokens from mapping 
+    * @param tokenSymbol token symbol
+    * @param tokenAddr token address
+    */
+    function removeToken(bytes8 tokenSymbol, address tokenAddr) returns (bool) {
       delete supportedTokens[tokenSymbol];
       return true;
     }
@@ -44,6 +54,10 @@ contract Persona is Owned(true) {
 
     }
 
+    /**
+    * @notice function to check if token is supported 
+    * @param symbol token symbol
+    */
     function doesTokenExist(bytes8 symbol) returns (bool) {
 
     }
@@ -176,6 +190,9 @@ contract Persona is Owned(true) {
         }
     }
 
+    /**
+    * @notice function to obtain function signature
+    */
     function getSignature(bytes _data) returns (bytes4 sig) {
         uint32 u = uint32(_data[3]) + (uint32(_data[2]) << 8) +
             (uint32(_data[1]) << 16) + (uint32(_data[0]) << 24);
