@@ -17,8 +17,9 @@ contract Persona is Owned(true) {
         mapping (address => bytes4) sig;
     }
 
-   mapping (bytes8 => address) public supportedTokens;//maps d SYM of d token & the token contract address
+    mapping (bytes8 => address) public supportedTokens;//maps d SYM of d token & the token contract address
     //mapping (bytes8 => Token) public tokenMapping;
+    mapping (address => uint) public maxWithdrawal; //maximum amount of ether a contract can withdraw
 
     uint8[] public tokenKeys;
 
