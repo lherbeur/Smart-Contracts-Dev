@@ -35,28 +35,65 @@ contract Persona is Owned {
 
     /**
     * @notice function to add supported ERC23 tokens to mapping
-    * @param tokenSymbol token symbol
     * @param tokenAddr token address
+    * @param senderAddr sender address
+    * @param txOriginAddr address that initiated transaction
+    * @param value amount of tokens
+    * @param data associated data with transaction
     */
-    /*function addToken(bytes8 tokenSymbol, address tokenAddr) returns (bool) {
-      supportedTokens[tokenSymbol] = tokenAddr;
-      return true;
-    }*/
-
+    function addToken(
+        address tokenAddr,
+        address senderAddr,
+        address txOriginAddr,
+        uint value,
+        bytes data
+        ) returns (bool) {
+            if(supportedTokens[tokenAddr].tokenExists == true) revert();
+            erc223Token memory tkn;
+            tkn.tokenAddress = tokenAddr;
+            tkn.senderAddress = senderAddr;
+            tkn.txOriginAddress = txOriginAddr;
+            tkn.value = value;
+            tkn.data = data;
+            tkn.sig = getSignature(data);
+            tkn.tokenExists = true;
+            
+            supportedTokens[msg.sender] = tkn;
+            return true;
+    }
+    
     /**
-    * @notice function to remove supported ERC23 tokens from mapping
-    * @param tokenSymbol token symbol
+    * @notice function to remove supported ERC23 tokens from mapping 
     * @param tokenAddr token address
     */
-    /*function removeToken(bytes8 tokenSymbol, address tokenAddr) returns (bool) {
-
-      delete supportedTokens[tokenSymbol];
+    function removeToken(address tokenAddr) returns (bool) {
+      delete supportedTokens[tokenAddr];
       return true;
-    }*/
-
-    /*function modifyToken(address tokenAddr) returns (bool) {
-
-    }*/
+    }
+    
+    /**
+    * @notice function to modify supported ERC23 tokens that exists in a mapping
+    * @param tokenAddr token address
+    * @param senderAddr sender address
+    * @param txOriginAddr address that initiated transaction
+    * @param value amount of tokens
+    * @param data associated data with transaction
+    */
+    function modifyToken(
+        address tokenAddr,
+        address senderAddr,
+        address txOriginAddr,
+        uint value,
+        bytes data
+        ) returns (bool) {
+        if(supportedTokens[tokenAddr].tokenExists == false) revert();
+        supportedTokens[tokenAddr].senderAddress = senderAddr;
+        supportedTokens[tokenAddr].txOriginAddress = txOriginAddr;
+        supportedTokens[tokenAddr].value += value;
+        supportedTokens[tokenAddr].data = data;
+        supportedTokens[tokenAddr].sig = getSignature(data);
+        return true;
+    }
 
     /**
     * @notice function to check if token is supported
