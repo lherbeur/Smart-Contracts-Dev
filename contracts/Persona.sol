@@ -28,6 +28,7 @@ contract Persona is Owned {
 
     event LogEtherSent(address recipient, uint amount, uint balance);
     event LogEtherReceived(address sender, uint amount, uint balance);
+    event LogTokenReceived(address sender, uint amount, uint balance);
 
     function Persona(address ConsensusxAddr) {
         personaOwner = ConsensusxAddr;
@@ -59,6 +60,7 @@ contract Persona is Owned {
             tkn.tokenExists = true;
             
             supportedTokens[msg.sender] = tkn;
+            LogTokenReceived(msg.sender, value, value);
             return true;
     }
     
@@ -92,6 +94,7 @@ contract Persona is Owned {
         supportedTokens[tokenAddr].value += value;
         supportedTokens[tokenAddr].data = data;
         supportedTokens[tokenAddr].sig = getSignature(data);
+        LogTokenReceived(msg.sender, value, supportedTokens[tokenAddr].value);
         return true;
     }
 
@@ -156,6 +159,17 @@ contract Persona is Owned {
             changeWithdrawal(addr);
         }
         maxWithdrawal[addr] = value;
+    }
+
+    /**
+    * @notice function to buy tokens given a certain amount of wei
+    * @dev msg.value is fixed instead of being dynamic. This will be adjusted as 
+    *   project continues
+    * @param tokenAddr token address
+    */
+    function withdrawToken(address tokenAddr) {
+        Token ercToken = Token(tokenAddr);
+        ercToken.claimToken.value(100000000000000000)();
     }
 
     /**
