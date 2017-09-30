@@ -7,7 +7,7 @@ contract Persona is Owned {
 
     address public personaOwner;
 
-    struct Token {
+    struct erc223Token {
         string name;
         bytes8 symbol;
         address tokenAddress;
@@ -20,7 +20,7 @@ contract Persona is Owned {
         mapping (address => bytes4) sig;*/
     }
 
-    mapping (address => Token) public supportedTokens;//maps d token contract address to token struct
+    mapping (address => erc223Token) public supportedTokens;//maps d token contract address to token struct
     //mapping (bytes8 => Token) public tokenMapping;
     mapping (address => uint) public maxWithdrawal; //maximum amount of ether a contract can withdraw
 
@@ -239,10 +239,6 @@ contract Persona is Owned {
 
     }
 
-    function() payable {
-        LogEtherReceived(msg.sender, msg.value, this.balance);
-    }
-
     /**
     * @dev fallback function to be called (ERC223 standard)
     * @param _from address of token sender
@@ -255,25 +251,30 @@ contract Persona is Owned {
 
         if (doesTokenExist(msg.sender))
         {
-          supportedTokens[msg.sender].value += _value;
+            modifyToken(msg.sender, _from, tx.origin, _value, _data);
+          //supportedTokens[msg.sender].value += _value;
         }
         else
         {
-          Token tkn;
-
-          /*tkn.name =  */
-          /*tkn.symbol*/
-          tkn.tokenAddress = msg.sender;
-          tkn.senderAddress = _from;
-          tkn.txOriginAddress = tx.origin;
-          tkn.value = _value;
-          tkn.data = _data;
-          tkn.sig = getSignature(_data);
-
-          supportedTokens[msg.sender] = tkn;
+            //Token memory tkn;
+            /*tkn.name = "name";
+            tkn.symbol = "Symbol";*/
+            /*tkn.tokenAddress = msg.sender;
+            tkn.senderAddress = _from;
+            tkn.txOriginAddress = tx.origin;
+            tkn.value = _value;
+            tkn.data = _data;
+            tkn.sig = getSignature(_data);*/
+          
+            addToken(msg.sender, _from, tx.origin, _value, _data);
+            //supportedTokens[msg.sender] = tkn;
         }
 
         //i guess we basically need addr and val to b in d storage...we might, as well, just strip d token struct of oda elements
+    }
+
+    function() payable {
+        LogEtherReceived(msg.sender, msg.value, this.balance);
     }
 
 }
