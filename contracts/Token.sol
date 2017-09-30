@@ -29,6 +29,7 @@ contract Token is Owned(true), ERC23, SafeMath  {
 
     /// @notice event triggered when tokens are transferred
     event Transfer(address indexed _from, address indexed _to, uint256 _value); //Transfer event
+    event LogEtherReceived(address sender, uint amount, uint balance); //log ether deposit
 
     function Token(
         string tokenName,
@@ -216,4 +217,24 @@ contract Token is Owned(true), ERC23, SafeMath  {
         }
     }
 
+    /**
+    * @notice function called to purchase tokens
+    * @dev calculation of tokens given amount of wei and token value is done
+    *   as proof of concept. The token value is fixed instead of dynamic. This 
+    *   will be moved to the client side as the project progresses to save gas 
+    *   costs and to make the inputs more dynamic
+    */
+   function claimToken() payable returns (uint tokensPurchased) {
+        if(msg.value == 0) revert();
+        uint precision = 10;
+        var tokenValue = 2000000000000000000;
+        var etherValue = msg.value;
+        // caution, check safe-to-multiply here
+        uint _numerator  = etherValue * 10 ** (precision+1);
+        // with rounding of last digit
+        tokensPurchased =  ((_numerator / tokenValue) + 5) / 10;
+        Persona receiver = Persona(msg.sender);
+        receiver.tokenFallback(msg.sender, tokensPurchased, msg.data);
+        LogEtherReceived(msg.sender, msg.value, this.balance);
+    }
 }
