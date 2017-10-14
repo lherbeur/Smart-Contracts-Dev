@@ -166,10 +166,11 @@ contract Persona is Owned {
     * @dev msg.value is fixed instead of being dynamic. This will be adjusted as 
     *   project continues
     * @param tokenAddr token address
+    * @param amount value of tokens
     */
-    function withdrawToken(address tokenAddr) {
+    function buyToken(address tokenAddr, uint amount) {
         Token ercToken = Token(tokenAddr);
-        ercToken.claimToken.value(100000000000000000)();
+        ercToken.claimToken.value(amount)();
     }
 
     /**
@@ -179,11 +180,12 @@ contract Persona is Owned {
     * @param _to address where token will be sent
     * @param _value amount of tokens
     */
-    function transferToken(address _to, uint _value) returns (uint) {
-        //get instance of token using the token address
-        //run checks
-        //make contract state changes
-        //call token transfer function
+    function transferToken(address tokenAddr, address _to, uint _value) returns (bool) {
+        if(_to == getAddress()) {
+            modifyToken(tokenAddr, _to, tx.origin, _value, msg.data);
+        }
+        Token ercToken = Token(tokenAddr);
+        if(ercToken.transfer(_to, _value)) return true;
     }
 
     /**
