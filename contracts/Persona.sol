@@ -189,22 +189,23 @@ contract Persona is Owned {
     }
 
     /**
-    * @notice function that is called when a user or another contract wants to
+    * @notice function that is called when a user or another contract wants to 
     *   transfer funds with _data
     * @dev ERC23 version of transfer where _data is supplied
     * @param _to address where token will be sent
     * @param _value amount of tokens
     * @param _data - information that accompanies transactions
     */
-    function transferToken(address _to, uint _value, bytes _data) returns (uint) {
-        //get instance of token using the token address
-        //run checks
-        //make contract state changes
-        //call token transfer function
+    function transferToken(address tokenAddr, address _to, uint _value, bytes _data) returns (bool) {
+        if(_to == getAddress()) {
+            modifyToken(tokenAddr, _to, tx.origin, _value, msg.data);
+        }
+        Token ercToken = Token(tokenAddr);
+        if(ercToken.transfer(_to, _value, msg.data)) return true;
     }
-
+    
     /**
-    * @notice function that is called when a user or another contract wants to
+    * @notice function that is called when a user or another contract wants to 
     *   transfer funds with _data and _callback
     * @dev ERC23 version of transfer where callback to handle tokens is supplied
     * @param _to address where token will be sent
@@ -212,11 +213,12 @@ contract Persona is Owned {
     * @param _data - information that accompanies transactions
     * @param _custom_fallback callback function
     */
-    function transferToken(address _to, uint _value, bytes _data, string _custom_fallback) returns (uint) {
-        //get instance of token using the token address
-        //run checks
-        //make contract state changes
-        //call token transfer function
+    function transferToken(address tokenAddr, address _to, uint _value, bytes _data, string _custom_fallback) returns (bool) {
+        if(_to == getAddress()) {
+            modifyToken(tokenAddr, _to, tx.origin, _value, msg.data);
+        }
+        Token ercToken = Token(tokenAddr);
+        if(ercToken.transfer(_to, _value, msg.data, _custom_fallback)) return true;
     }
 
     /**
