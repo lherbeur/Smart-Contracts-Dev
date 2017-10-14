@@ -226,15 +226,22 @@ contract Token is Owned(true), ERC23, SafeMath  {
     */
    function claimToken() payable returns (uint tokensPurchased) {
         if(msg.value == 0) revert();
-        uint precision = 10;
+        uint precision = 3;
         var tokenValue = 2000000000000000000;
         var etherValue = msg.value;
         // caution, check safe-to-multiply here
         uint _numerator  = etherValue * 10 ** (precision+1);
         // with rounding of last digit
         tokensPurchased =  ((_numerator / tokenValue) + 5) / 10;
-        Persona receiver = Persona(msg.sender);
-        receiver.tokenFallback(msg.sender, tokensPurchased, msg.data);
-        LogEtherReceived(msg.sender, msg.value, this.balance);
+        if(isContract(msg.sender)){
+            balances[msg.sender] = safeAdd(balanceOf(msg.sender), tokensPurchased);
+            Persona receiver = Persona(msg.sender);
+            receiver.tokenFallback(msg.sender, tokensPurchased, msg.data);
+            LogEtherReceived(msg.sender, msg.value, this.balance);
+        } else {
+            balances[msg.sender] = safeAdd(balanceOf(msg.sender), tokensPurchased);
+            LogEtherReceived(msg.sender, msg.value, this.balance);
+        }
+        
     }
 }
